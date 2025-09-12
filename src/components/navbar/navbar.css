@@ -1,49 +1,41 @@
-/* dashboard.css */
+/* Sidebar wrapper */
 @import "tailwindcss";
-/* dashboard.css */
-.layout {
-  @apply flex min-h-screen bg-white text-gray-800;
-}
-
-/* Sidebar */
 .sidebar {
-  @apply w-64 bg-gray-100 text-center border-r gap-10 border-gray-200 p-6 hidden md:flex flex-col;
+  @apply bg-gradient-to-b from-indigo-600 to-indigo-800 text-white shadow-xl p-6;
 }
 
+/* Mobile sidebar */
+.sidebar-mobile {
+  @apply fixed top-0 left-0 h-full w-64 bg-gradient-to-b from-indigo-600 to-indigo-800 text-white shadow-xl p-6 z-40;
+}
+
+/* Title */
 .sidebar-title {
-  @apply text-3xl font-bold mb-8 tracking-tight;
+  @apply text-2xl font-bold tracking-wide text-center mb-8 border-b border-white/20 pb-2;
 }
 
+/* Nav container */
 .sidebar-nav {
-  @apply flex flex-col gap-3;
+  @apply flex flex-col gap-2;
 }
 
+/* Nav item */
 .sidebar-item {
-  @apply flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-200 transition text-left text-2xl font-medium;
+  @apply flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200;
+}
+.sidebar-item:hover {
+  @apply bg-white/10 pl-6;
 }
 
+/* Icon */
 .sidebar-icon {
-  @apply text-gray-600 ;
+  @apply text-lg;
 }
 
-/* Main Content */
-.main {
-  @apply flex-1 p-8;
+/* Mobile menu toggle */
+.menu-toggle {
+  @apply p-2 bg-white text-indigo-700 rounded shadow-md;
 }
-
-.main-header {
-  @apply text-3xl font-bold mb-6;
-}
-
-.main-subtext {
-  @apply text-gray-600 leading-relaxed;
-}
-
-/* Mobile Menu */
-.mobile-wrapper {
-  @apply md:hidden w-full border-b border-gray-200;
-}
-
-.mobile-menu-btn {
-  @apply p-3 w-full text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition;
+.menu-toggle:hover {
+  @apply bg-indigo-100;
 }

@@ -10,11 +10,11 @@ import {
   FaRegEdit,
 } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
-import "./navbar.css"
+import "./navbar.css";
 
 const menuItems = [
   { name: "Create Blog", icon: FaPlus, href: "/create" },
-  { name: "Manage Blog", icon: FaBlog, href: "/manage-blog" },
+  { name: "Manage Blog", icon: FaBlog, href: "/manage" },
   { name: "Manage Video Gallery", icon: FaVideo, href: "/dashboard/manage-videos" },
   { name: "Manage Photo Gallery", icon: FaImages, href: "/dashboard/manage-photos" },
   { name: "Testimonials", icon: FaQuoteRight, href: "/dashboard/testimonials" },
@@ -27,12 +27,12 @@ export default function DashboardNavbar() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className="sidebar hidden md:flex flex-col fixed top-0 left-0 h-full w-64 bg-gray-100 p-6">
-        <h2 className="sidebar-title mb-6">Dashboard</h2>
-        <nav className="sidebar-nav flex flex-col gap-3">
+      <aside className="sidebar hidden md:flex flex-col fixed top-0 left-0 h-full w-64">
+        <h2 className="sidebar-title">Dashboard</h2>
+        <nav className="sidebar-nav">
           {menuItems.map((item) => (
-            <Link key={item.name} href={item.href} className="sidebar-item flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200">
-              <item.icon className="text-gray-600" />
+            <Link key={item.name} href={item.href} className="sidebar-item">
+              <item.icon className="sidebar-icon" />
               <span>{item.name}</span>
             </Link>
           ))}
@@ -41,24 +41,27 @@ export default function DashboardNavbar() {
 
       {/* Mobile Toggle */}
       <div className="md:hidden fixed top-4 left-4 z-50">
-        <button onClick={() => setIsOpen(!isOpen)} className="p-2 bg-gray-100 rounded shadow">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="menu-toggle"
+        >
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
       </div>
 
       {/* Mobile Sidebar */}
       {isOpen && (
-        <aside className="sidebar-mobile fixed top-0 left-0 h-full w-64 bg-gray-100 p-6 z-40 md:hidden">
-          <h2 className="sidebar-title mb-6">Dashboard</h2>
-          <nav className="sidebar-nav flex flex-col gap-3">
+        <aside className="sidebar-mobile md:hidden">
+          <h2 className="sidebar-title">Dashboard</h2>
+          <nav className="sidebar-nav">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="sidebar-item flex items-center gap-3 px-3 py-2 rounded hover:bg-gray-200"
+                className="sidebar-item"
                 onClick={() => setIsOpen(false)}
               >
-                <item.icon className="text-gray-600" />
+                <item.icon className="sidebar-icon" />
                 <span>{item.name}</span>
               </Link>
             ))}
