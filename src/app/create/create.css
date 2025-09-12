@@ -1,0 +1,39 @@
+
+
+@import "tailwindcss";
+
+.main-content {
+  @apply w-full min-h-screen bg-gray-50 px-4 sm:px-6 lg:px-8 py-10;
+}
+
+.form-wrapper {
+  @apply w-full max-w-4xl mx-auto bg-white shadow-md rounded-xl p-6 sm:p-8 lg:p-10;
+}
+
+.form-title {
+  @apply text-2xl sm:text-3xl font-bold mb-8 text-gray-900 text-center;
+}
+
+.form-group {
+  @apply flex flex-col space-y-2;
+}
+
+.form-label {
+  @apply text-sm font-medium text-gray-700;
+}
+
+.form-input {
+  @apply border border-gray-300 rounded-lg px-4 py-2 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:outline-none transition;
+}
+
+.form-textarea {
+  @apply border border-gray-300 rounded-lg px-4 py-2 h-28 sm:h-32 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:outline-none transition;
+}
+
+.editor {
+  @apply border border-gray-300 rounded-lg px-4 py-2 h-40 sm:h-52 text-sm sm:text-base focus:ring-2 focus:ring-blue-500 focus:outline-none transition;
+}
+
+.submit-btn {
+  @apply w-full sm:w-auto flex items-center justify-center gap-2 bg-blue-600 text-white font-medium px-6 py-3 rounded-lg hover:bg-blue-700 active:scale-95 transition;
+}

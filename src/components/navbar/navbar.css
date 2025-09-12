@@ -1,0 +1,49 @@
+/* dashboard.css */
+@import "tailwindcss";
+/* dashboard.css */
+.layout {
+  @apply flex min-h-screen bg-white text-gray-800;
+}
+
+/* Sidebar */
+.sidebar {
+  @apply w-64 bg-gray-100 text-center border-r gap-10 border-gray-200 p-6 hidden md:flex flex-col;
+}
+
+.sidebar-title {
+  @apply text-3xl font-bold mb-8 tracking-tight;
+}
+
+.sidebar-nav {
+  @apply flex flex-col gap-3;
+}
+
+.sidebar-item {
+  @apply flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer hover:bg-gray-200 transition text-left text-2xl font-medium;
+}
+
+.sidebar-icon {
+  @apply text-gray-600 ;
+}
+
+/* Main Content */
+.main {
+  @apply flex-1 p-8;
+}
+
+.main-header {
+  @apply text-3xl font-bold mb-6;
+}
+
+.main-subtext {
+  @apply text-gray-600 leading-relaxed;
+}
+
+/* Mobile Menu */
+.mobile-wrapper {
+  @apply md:hidden w-full border-b border-gray-200;
+}
+
+.mobile-menu-btn {
+  @apply p-3 w-full text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition;
+}
