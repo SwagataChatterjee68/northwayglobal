@@ -1,24 +1,9 @@
 @import "tailwindcss";
 
 .page-container {
-  @apply flex min-h-screen bg-gray-100;
+  @apply flex min-h-screen;
 }
 
-.sidebar {
-  @apply w-64 bg-gray-800 text-white p-6 hidden md:block;
-}
-
-.sidebar-title {
-  @apply text-2xl font-bold mb-6;
-}
-
-.sidebar-menu {
-  @apply space-y-3;
-}
-
-.sidebar-menu li {
-  @apply hover:text-blue-400 cursor-pointer;
-}
 
 .main-content {
   @apply flex-1 p-6 overflow-x-auto;
@@ -50,9 +35,9 @@
 
 .form-input,
 .form-textarea {
-  @apply border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 ;
 }
 
 .submit-btn {
-  @apply flex items-center gap-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600;
+  @apply flex items-center gap-2 bg-gray-200 px-4 py-2 rounded hover:bg-gray-300;
 }

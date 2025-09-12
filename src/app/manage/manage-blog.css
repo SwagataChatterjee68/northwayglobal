@@ -4,24 +4,8 @@
   @apply flex min-h-screen bg-gray-100;
 }
 
-.sidebar {
-  @apply w-64 bg-gray-800 text-white p-6 hidden md:block;
-}
-
-.sidebar-title {
-  @apply text-2xl font-bold mb-6;
-}
-
-.sidebar-menu {
-  @apply space-y-3;
-}
-
-.sidebar-menu li {
-  @apply hover:text-blue-400 cursor-pointer;
-}
-
 .main-content {
-  @apply flex-1 p-6 overflow-x-auto max-w-7xl mx-auto;
+  @apply flex-1 p-6 overflow-x-auto;
 }
 
 .page-title {
@@ -53,7 +37,7 @@
 }
 
 .blogs-table tbody tr {
-  @apply border-b hover:bg-gray-50;
+  @apply  hover:bg-gray-50;
 }
 
 .actions {
@@ -61,7 +45,7 @@
 }
 
 .btn-update {
-  @apply flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm;
+  @apply flex items-center gap-1 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 text-sm;
 }
 
 .btn-delete {

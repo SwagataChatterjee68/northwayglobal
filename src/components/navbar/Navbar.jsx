@@ -28,7 +28,8 @@ export default function DashboardNavbar() {
     <>
       {/* Desktop Sidebar */}
       <aside className="sidebar hidden md:flex flex-col fixed top-0 left-0 h-full w-64">
-        <h2 className="sidebar-title">Dashboard</h2>
+        
+        <img src="/logo.jpeg" className="logo"  />
         <nav className="sidebar-nav">
           {menuItems.map((item) => (
             <Link key={item.name} href={item.href} className="sidebar-item">
