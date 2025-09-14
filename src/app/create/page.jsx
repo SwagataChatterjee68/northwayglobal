@@ -6,6 +6,7 @@ import "./create.css";
 import { Editor } from "@tinymce/tinymce-react";
 
 
+
 export default function CreateBlog() {
   const [formData, setFormData] = useState({
     title: "",
@@ -116,7 +117,7 @@ export default function CreateBlog() {
             <div className="form-group">
               <label className="form-label">Start Writing</label>
               <Editor
-                apiKey="qbxnjsfb78uvm2zeaddwkkrwrceywuxsz1o4e9ncq0s3hwmz"
+                apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                 value={formData.content}
                 onEditorChange={handleEditorChange}
                 init={{

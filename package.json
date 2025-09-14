@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tinymce/tinymce-react": "^5.1.1",
+    "dotenv": "^17.2.2",
     "json-server": "^1.0.0-beta.3",
     "next": "^15.5.3",
     "react": "^19.1.0",
