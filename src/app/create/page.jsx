@@ -3,6 +3,8 @@ import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import "../globals.css";
 import "./create.css";
+import { Editor } from "@tinymce/tinymce-react";
+
 
 export default function CreateBlog() {
   const [formData, setFormData] = useState({
@@ -54,6 +56,11 @@ export default function CreateBlog() {
       setMessage("⚠️ Error connecting to server");
     }
   };
+
+  const handleEditorChange = (content) => {
+    setFormData({ ...formData, content }); // keep other fields unchanged
+  };
+
 
   return (
     <div className="page-container">
@@ -108,13 +115,56 @@ export default function CreateBlog() {
             </div>
             <div className="form-group">
               <label className="form-label">Start Writing</label>
-              <textarea
-                name="content"
-                className="form-textarea"
-                placeholder="Write your blog content here..."
+              <Editor
+                apiKey="qbxnjsfb78uvm2zeaddwkkrwrceywuxsz1o4e9ncq0s3hwmz"
                 value={formData.content}
-                onChange={handleChange}
-                required
+                onEditorChange={handleEditorChange}
+                init={{
+                  menubar: false,
+                  branding: false,
+                  plugins: [
+                    "anchor",
+                    "autolink",
+                    "charmap",
+                    "codesample",
+                    "emoticons",
+                    "link",
+                    "lists",
+                    "media",
+                    "searchreplace",
+                    "table",
+                    "visualblocks",
+                    "wordcount",
+                    "checklist",
+                    "mediaembed",
+                    "casechange",
+                    "formatpainter",
+                    "pageembed",
+                    "a11ychecker",
+                    "tinymcespellchecker",
+                    "permanentpen",
+                    "powerpaste",
+                    "advtable",
+                    "advcode",
+                    "advtemplate",
+                    "mentions",
+                    "tableofcontents",
+                    "footnotes",
+                    "mergetags",
+                    "autocorrect",
+                    "typography",
+                    "inlinecss",
+                    "markdown",
+                    "importword",
+                    "exportword",
+                    "exportpdf",
+                  ],
+                  toolbar:
+                    "undo redo | blocks fontfamily fontsize | " +
+                    "bold italic underline strikethrough | link media table mergetags | " +
+                    "align lineheight | checklist numlist bullist indent outdent | " +
+                    "emoticons charmap | removeformat",
+                }}
               />
             </div>
             <button type="submit" className="submit-btn">
