@@ -3,7 +3,7 @@
 
 /* Form Card */
 .form-wrapper {
-  @apply  shadow-lg rounded-2xl p-8 w-full max-w-2xl;
+  @apply  shadow-lg rounded-2xl p-8 py-20 w-full max-w-2xl;
 }
 .form-title {
   @apply text-2xl font-bold mb-6 text-gray-800 ;
@@ -31,14 +31,12 @@
   @apply text-green-600 mt-4 text-center font-medium;
 }
 .page-container {
-  @apply flex min-h-screen  ;
+  @apply flex min-h-screen  max-w-7xl;
 }
 
 .main-content {
   @apply flex-grow p-10 ;
 }
-
-
 
 .form-label {
   @apply mb-2 font-medium;
