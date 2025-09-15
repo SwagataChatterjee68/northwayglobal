@@ -11,7 +11,7 @@ export default function ManageBlogs() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await fetch("http://localhost:5000/blogs");
+      const res = await fetch("https://json-server-lnkp.onrender.com/blogs");
       if (res.ok) {
         const data = await res.json();
         setBlogs(data);
