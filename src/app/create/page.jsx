@@ -37,7 +37,7 @@ export default function CreateBlog() {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/blogs", {
+      const res = await fetch("https://json-server-lnkp.onrender.com/blogs", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(blogData),

@@ -31,7 +31,7 @@ export default function ManageBlogs() {
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this blog?")) return;
     try {
-      const res = await fetch(`http://localhost:5000/blogs/${id}`, {
+      const res = await fetch(`https://json-server-lnkp.onrender.com/blogs/${id}`, {
         method: "DELETE",
       });
       if (res.ok) {

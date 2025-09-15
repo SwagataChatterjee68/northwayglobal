@@ -59,7 +59,7 @@ export default function UpdateBlog() {
     };
 
     try {
-      const res = await fetch(`http://localhost:5000/blogs/${id}`, {
+      const res = await fetch(`https://json-server-lnkp.onrender.com/blogs/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(blogData),

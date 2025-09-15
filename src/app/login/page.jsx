@@ -13,7 +13,7 @@ export default function LoginPage() {
 
     try {
       const res = await fetch(
-        `http://localhost:3001/users?email=${email}&password=${password}`
+        `https://json-server-lnkp.onrender.com/users?email=${email}&password=${password}`
       );
       const data = await res.json();
 
