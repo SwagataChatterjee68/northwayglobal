@@ -2,11 +2,13 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import { Editor } from "@tinymce/tinymce-react";
+import { toast } from "sonner";
 import "./update.css";
 
 export default function UpdateBlog() {
   const params = useParams();
-  const { id } = params; // Get blog ID from URL
+  const { id } = params;
   const router = useRouter();
 
   const [formData, setFormData] = useState({
@@ -16,13 +18,12 @@ export default function UpdateBlog() {
     image: null,
     content: "",
   });
-  const [message, setMessage] = useState("");
 
   // Fetch blog data on mount
   useEffect(() => {
     async function fetchBlog() {
       try {
-        const res = await fetch(`http://localhost:5000/blogs/${id}`);
+        const res = await fetch(`https://json-server-lnkp.onrender.com/blogs/${id}`);
         const data = await res.json();
         setFormData({
           title: data.title || "",
@@ -33,7 +34,7 @@ export default function UpdateBlog() {
         });
       } catch (err) {
         console.error(err);
-        setMessage("⚠️ Failed to load blog data");
+        toast.error("Failed to load blog data");
       }
     }
     fetchBlog();
@@ -45,6 +46,10 @@ export default function UpdateBlog() {
       ...prev,
       [name]: files ? files[0] : value,
     }));
+  };
+
+  const handleEditorChange = (content) => {
+    setFormData((prev) => ({ ...prev, content }));
   };
 
   const handleSubmit = async (e) => {
@@ -65,24 +70,22 @@ export default function UpdateBlog() {
         body: JSON.stringify(blogData),
       });
       if (res.ok) {
-        setMessage("Blog updated successfully!");
+        toast.success("Blog updated successfully!");
         router.push("/manage"); // Redirect after update
       } else {
-        setMessage("Failed to update blog");
+        toast.error("Failed to update blog");
       }
     } catch (err) {
       console.error(err);
-      setMessage("Error connecting to server");
+      toast.error("Error connecting to server");
     }
   };
 
   return (
     <div className="page-container">
-      {/* Main Content */}
       <main className="main-content">
         <div className="form-wrapper">
           <h1 className="form-title">Update Blog</h1>
-          {message && <p className="message">{message}</p>}
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="form-row">
               <div className="form-group">
@@ -133,13 +136,57 @@ export default function UpdateBlog() {
 
             <div className="form-group">
               <label className="form-label">Start Writing</label>
-              <textarea
-                name="content"
-                className="form-textarea"
-                placeholder="Write your blog content here..."
+              <Editor
+                id="my-tinymce-editor"
+                apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                 value={formData.content}
-                onChange={handleChange}
-                required
+                onEditorChange={handleEditorChange}
+                init={{
+                  menubar: false,
+                  branding: false,
+                  plugins: [
+                    "anchor",
+                    "autolink",
+                    "charmap",
+                    "codesample",
+                    "emoticons",
+                    "link",
+                    "lists",
+                    "media",
+                    "searchreplace",
+                    "table",
+                    "visualblocks",
+                    "wordcount",
+                    "checklist",
+                    "mediaembed",
+                    "casechange",
+                    "formatpainter",
+                    "pageembed",
+                    "a11ychecker",
+                    "tinymcespellchecker",
+                    "permanentpen",
+                    "powerpaste",
+                    "advtable",
+                    "advcode",
+                    "advtemplate",
+                    "mentions",
+                    "tableofcontents",
+                    "footnotes",
+                    "mergetags",
+                    "autocorrect",
+                    "typography",
+                    "inlinecss",
+                    "markdown",
+                    "importword",
+                    "exportword",
+                    "exportpdf",
+                  ],
+                  toolbar:
+                    "undo redo | blocks fontfamily fontsize | " +
+                    "bold italic underline strikethrough | link media table mergetags | " +
+                    "align lineheight | checklist numlist bullist indent outdent | " +
+                    "emoticons charmap | removeformat",
+                }}
               />
             </div>
 

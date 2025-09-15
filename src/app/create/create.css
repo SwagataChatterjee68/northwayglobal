@@ -3,10 +3,10 @@
 
 /* Form Card */
 .form-wrapper {
-  @apply  shadow-lg rounded-2xl p-8 py-20 w-full max-w-2xl;
+  @apply  px-8 rounded-lg py-10;
 }
 .form-title {
-  @apply text-2xl font-bold mb-6 text-gray-800 ;
+  @apply text-2xl font-bold mb-4 ;
 }
 .form-subtitle {
   @apply text-gray-500 mb-6 ;
@@ -52,4 +52,7 @@
 
 .message-success {
   @apply mt-4 text-green-600 font-medium;
+}
+#my-tinymce-editor{
+  @apply h-72; 
 }

@@ -5,12 +5,14 @@ import "./manage-blog.css";
 import { useRouter } from "next/navigation";
 
 export default function ManageBlogs() {
-  const router=useRouter();
+  const router = useRouter();
   const [blogs, setBlogs] = useState([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(true); // loading state
 
   const fetchBlogs = async () => {
     try {
+      setLoading(true);
       const res = await fetch("https://json-server-lnkp.onrender.com/blogs");
       if (res.ok) {
         const data = await res.json();
@@ -21,6 +23,8 @@ export default function ManageBlogs() {
     } catch (err) {
       console.error(err);
       setMessage("Error connecting to server");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -45,9 +49,10 @@ export default function ManageBlogs() {
       setMessage("Error connecting to server");
     }
   };
-  const handleUpdate = async (id) => {
-    router.push(`/update/${id}`)
-  }
+
+  const handleUpdate = (id) => {
+    router.push(`/update/${id}`);
+  };
 
   return (
     <div className="page-container">
@@ -66,27 +71,41 @@ export default function ManageBlogs() {
               </tr>
             </thead>
             <tbody>
-              {blogs.map((blog) => (
-                <tr key={blog.id}>
-                  <td>{blog.title}</td>
-                  <td>{blog.writer}</td>
-                  <td>{blog.description}</td>
-                  <td className="actions">
-                    <button
-                      className="btn-update"
-                      onClick={() => handleUpdate(blog.id)}
-                    >
-                      <FaEdit /> Update
-                    </button>
-                    <button
-                      className="btn-delete"
-                      onClick={() => handleDelete(blog.id)}
-                    >
-                      <FaTrash /> Delete
-                    </button>
+              {loading ? (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    Loading...
                   </td>
                 </tr>
-              ))}
+              ) : blogs.length > 0 ? (
+                blogs.map((blog) => (
+                  <tr key={blog.id}>
+                    <td>{blog.title}</td>
+                    <td>{blog.writer}</td>
+                    <td>{blog.description}</td>
+                    <td className="actions">
+                      <button
+                        className="btn-update"
+                        onClick={() => handleUpdate(blog.id)}
+                      >
+                        <FaEdit /> Update
+                      </button>
+                      <button
+                        className="btn-delete"
+                        onClick={() => handleDelete(blog.id)}
+                      >
+                        <FaTrash /> Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4">
+                    No blogs found.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

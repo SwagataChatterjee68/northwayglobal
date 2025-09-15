@@ -1,9 +1,10 @@
 "use client";
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
+import { Editor } from "@tinymce/tinymce-react";
+import { toast } from "sonner";
 import "../globals.css";
 import "./create.css";
-import { Editor } from "@tinymce/tinymce-react";
 
 export default function CreateBlog() {
   const [formData, setFormData] = useState({
@@ -14,14 +15,16 @@ export default function CreateBlog() {
     content: "",
   });
 
-  const [message, setMessage] = useState("");
-
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: files ? files[0] : value,
     }));
+  };
+
+  const handleEditorChange = (content) => {
+    setFormData((prev) => ({ ...prev, content }));
   };
 
   const handleSubmit = async (e) => {
@@ -44,22 +47,17 @@ export default function CreateBlog() {
       });
 
       if (res.ok) {
-        setMessage("✅ Blog created successfully!");
+        toast.success("Blog created successfully!");
         setFormData({ title: "", writer: "", description: "", image: null, content: "" });
         e.target.reset();
       } else {
-        setMessage("❌ Failed to create blog");
+        toast.error("Failed to create blog");
       }
     } catch (err) {
       console.error(err);
-      setMessage("⚠️ Error connecting to server");
+      toast.error("Error connecting to server");
     }
   };
-
-  const handleEditorChange = (content) => {
-    setFormData({ ...formData, content }); // keep other fields unchanged
-  };
-
 
   return (
     <div className="page-container">
@@ -68,6 +66,7 @@ export default function CreateBlog() {
           <h1 className="form-title">Create New Blog</h1>
           <p className="form-subtitle">Fill in the details below to publish your blog.</p>
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Title & Writer */}
             <div className="form-row">
               <div className="form-group">
                 <label className="form-label">Blog Title</label>
@@ -92,6 +91,8 @@ export default function CreateBlog() {
                 />
               </div>
             </div>
+
+            {/* Description */}
             <div className="form-group">
               <label className="form-label">Short Description</label>
               <textarea
@@ -102,6 +103,8 @@ export default function CreateBlog() {
                 required
               />
             </div>
+
+            {/* Image */}
             <div className="form-group">
               <label className="form-label">Upload Image</label>
               <input
@@ -112,6 +115,8 @@ export default function CreateBlog() {
                 onChange={handleChange}
               />
             </div>
+
+            {/* Editor */}
             <div className="form-group">
               <label className="form-label">Start Writing</label>
               <Editor
@@ -171,7 +176,6 @@ export default function CreateBlog() {
               <FaPaperPlane /> Submit Blog
             </button>
           </form>
-          {message && <p className="message-success">{message}</p>}
         </div>
       </main>
     </div>

@@ -1,9 +1,11 @@
+export const metadata = {
+  title: "Login",
+};
+
 export default function LoginLayout({ children }) {
   return (
-    <html lang="en">
-      <body>
-        {children}
-      </body>
-    </html>
+    <div className="bg-gray-100 flex items-center justify-center min-h-screen">
+      {children}
+    </div>
   );
 }

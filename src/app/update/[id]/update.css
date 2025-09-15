@@ -1,16 +1,14 @@
 @import "tailwindcss";
 
 .page-container {
-  @apply flex min-h-screen;
+  @apply flex min-h-screen py-20;
 }
-
-
 .main-content {
-  @apply flex-1 p-6 overflow-x-auto;
+  @apply flex-1  overflow-x-auto;
 }
 
 .form-wrapper {
-  @apply bg-white p-8 rounded-lg shadow-md max-w-7xl mx-auto;
+  @apply  p-8 rounded-lg  max-w-7xl mx-auto;
 }
 
 .form-title {
@@ -25,13 +23,7 @@
   @apply flex gap-6 mb-4 flex-col md:flex-row;
 }
 
-.form-group {
-  @apply flex flex-col flex-1;
-}
 
-.form-label {
-  @apply mb-2 font-medium;
-}
 
 .form-input,
 .form-textarea {
@@ -40,4 +32,14 @@
 
 .submit-btn {
   @apply flex items-center gap-2 bg-gray-200 px-4 py-2 rounded hover:bg-gray-300;
+}
+
+.form-group {
+  @apply flex flex-col space-y-2 w-full;
+}
+.form-label {
+  @apply text-gray-700 font-medium;
+}
+#my-tinymce-editor{
+  @apply h-72; 
 }

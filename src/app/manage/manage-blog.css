@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 .page-container {
-  @apply flex min-h-screen bg-gray-100 py-10;
-}
+  @apply flex min-h-screen py-20 p-8 rounded-lg  ;
+};
+
 
 .main-content {
   @apply flex-1 p-6 overflow-x-auto;
@@ -21,7 +22,7 @@
 }
 
 .blogs-table {
-  @apply min-w-full bg-white shadow-md rounded-lg overflow-hidden;
+  @apply min-w-full bg-gray-100 shadow-md rounded-lg overflow-hidden;
 }
 
 .blogs-table thead {
