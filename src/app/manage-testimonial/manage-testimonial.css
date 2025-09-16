@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* Container */
+.container {
+  @apply max-w-5xl mx-auto p-6 py-32;
+}
+
+.page-title {
+  @apply text-2xl font-bold mb-6;
+}
+
+.empty-text {
+  @apply text-gray-500 text-center;
+}
+
+/* Card grid */
+.card-grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6;
+}
+
+.testimonial-card {
+  @apply bg-white shadow rounded-lg p-4 flex flex-col;
+}
+
+.card-title {
+  @apply text-lg font-semibold;
+}
+
+.card-designation {
+  @apply text-sm text-gray-500 mb-2;
+}
+
+.card-video {
+  @apply w-full h-40 object-cover rounded mb-2;
+}
+
+.card-actions {
+  @apply flex justify-between mt-2;
+}
+
+.update-btn {
+  @apply bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 cursor-pointer;
+}
+
+.delete-btn {
+  @apply bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 cursor-pointer;
+}

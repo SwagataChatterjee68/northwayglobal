@@ -19,9 +19,9 @@
 
 /* Buttons */
 .btn-primary {
-  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition;
+  @apply bg-blue-600 text-white cursor-pointer px-4 py-2 rounded-md hover:bg-blue-700 transition;
 }
 
 .btn-secondary {
-  @apply bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition;
+  @apply bg-gray-300 text-gray-800 cursor-pointer px-4 py-2 rounded-md hover:bg-gray-400 transition;
 }

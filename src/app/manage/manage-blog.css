@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .page-container {
-  @apply flex min-h-screen py-20 p-8 rounded-lg  ;
+  @apply flex min-h-screen py-20 p-8 rounded-lg;
 };
 
 
@@ -46,9 +46,9 @@
 }
 
 .btn-update {
-  @apply flex items-center gap-1 bg-gray-200 px-3 py-1 rounded hover:bg-gray-300 text-sm;
+  @apply flex items-center gap-1 bg-gray-200 cursor-pointer px-3 py-1 rounded hover:bg-gray-300 text-sm;
 }
 
 .btn-delete {
-  @apply flex items-center gap-1 bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 text-sm;
+  @apply flex items-center gap-1 bg-red-500 cursor-pointer text-white px-3 py-1 rounded hover:bg-red-600 text-sm;
 }

@@ -14,7 +14,7 @@
 }
 
 .submit-btn {
-  @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600;
+  @apply px-4 py-2 bg-blue-500 text-white cursor-pointer rounded-md hover:bg-blue-600;
 }
 
 /* Video grid */
@@ -31,5 +31,5 @@
 }
 
 .video-delete {
-  @apply absolute top-1 right-1 bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs hover:bg-red-600;
+  @apply absolute top-1 right-1 cursor-pointer bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs hover:bg-red-600;
 }

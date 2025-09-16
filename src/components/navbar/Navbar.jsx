@@ -18,8 +18,8 @@ const menuItems = [
   { name: "Manage Blog", icon: FaBlog, href: "/manage" },
   { name: "Manage Video Gallery", icon: FaVideo, href: "/manage-video" },
   { name: "Manage Photo Gallery", icon: FaImages, href: "/manage-photo" },
-  { name: "Testimonials", icon: FaQuoteRight, href: "/dashboard/testimonials" },
-  { name: "Manage Testimonials", icon: FaRegEdit, href: "/dashboard/manage-testimonials" },
+  { name: "Testimonials", icon: FaQuoteRight, href: "/create-testimonial" },
+  { name: "Manage Testimonials", icon: FaRegEdit, href: "/manage-testimonial" },
 ];
 
 export default function DashboardNavbar() {
