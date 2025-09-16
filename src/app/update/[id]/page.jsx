@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "sonner";
+import PermissionBox from "@/components/modal/Permission";
 import "./update.css";
 
 export default function UpdateBlog() {
@@ -18,6 +19,8 @@ export default function UpdateBlog() {
     image: null,
     content: "",
   });
+
+  const [showPermission, setShowPermission] = useState(false);
 
   // Fetch blog data on mount
   useEffect(() => {
@@ -52,8 +55,8 @@ export default function UpdateBlog() {
     setFormData((prev) => ({ ...prev, content }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Confirm update action
+  const confirmUpdate = async () => {
     const formattedContent = `<p>${formData.content}</p>`;
     const blogData = {
       title: formData.title,
@@ -78,7 +81,15 @@ export default function UpdateBlog() {
     } catch (err) {
       console.error(err);
       toast.error("Error connecting to server");
+    } finally {
+      setShowPermission(false); // close popup
     }
+  };
+
+  // Instead of updating directly, show permission box
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowPermission(true);
   };
 
   return (
@@ -196,6 +207,14 @@ export default function UpdateBlog() {
           </form>
         </div>
       </main>
+
+      {/* Confirmation Popup */}
+      <PermissionBox
+        isOpen={showPermission}
+        onConfirm={confirmUpdate}
+        onCancel={() => setShowPermission(false)}
+        action="update"
+      />
     </div>
   );
 }

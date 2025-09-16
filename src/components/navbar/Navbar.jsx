@@ -16,8 +16,8 @@ import Topbar from "../topbar/Topbar";
 const menuItems = [
   { name: "Create Blog", icon: FaPlus, href: "/create" },
   { name: "Manage Blog", icon: FaBlog, href: "/manage" },
-  { name: "Manage Video Gallery", icon: FaVideo, href: "/dashboard/manage-videos" },
-  { name: "Manage Photo Gallery", icon: FaImages, href: "/dashboard/manage-photos" },
+  { name: "Manage Video Gallery", icon: FaVideo, href: "/manage-video" },
+  { name: "Manage Photo Gallery", icon: FaImages, href: "/manage-photo" },
   { name: "Testimonials", icon: FaQuoteRight, href: "/dashboard/testimonials" },
   { name: "Manage Testimonials", icon: FaRegEdit, href: "/dashboard/manage-testimonials" },
 ];

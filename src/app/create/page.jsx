@@ -1,9 +1,137 @@
+// "use client";
+// import { useState } from "react";
+// import { Editor } from "@tinymce/tinymce-react";
+// import { FaPaperPlane } from "react-icons/fa";
+// import { toast } from "sonner";
+// import PermissionBox from "@/components/modal/Permission";
+// import "./create.css";
+
+// export default function CreateBlog() {
+//   const [formData, setFormData] = useState({
+//     title: "",
+//     writer: "",
+//     description: "",
+//     image: null,
+//     content: "",
+//   });
+//   const [showPermission, setShowPermission] = useState(false);
+
+//   const handleChange = (e) => {
+//     const { name, value, files } = e.target;
+//     setFormData((prev) => ({
+//       ...prev,
+//       [name]: files ? files[0] : value,
+//     }));
+//   };
+
+//   const handleEditorChange = (content) => {
+//     setFormData((prev) => ({ ...prev, content }));
+//   };
+
+//   const handleSubmit = (e) => {
+//     e.preventDefault();
+//     setShowPermission(true); // open popup only
+//   };
+
+//   const confirmCreate = async () => {
+//     const blogData = {
+//       title: formData.title,
+//       writer: formData.writer,
+//       description: formData.description,
+//       image: formData.image ? formData.image.name : null,
+//       content: `<p>${formData.content}</p>`,
+//     };
+
+//     try {
+//       const res = await fetch("https://json-server-lnkp.onrender.com/blogs", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify(blogData),
+//       });
+
+//       if (res.ok) {
+//         toast.success("Blog created successfully!");
+//         setFormData({
+//           title: "",
+//           writer: "",
+//           description: "",
+//           image: null,
+//           content: "",
+//         });
+//       } else {
+//         toast.error("Failed to create blog");
+//       }
+//     } catch (err) {
+//       console.error(err);
+//       toast.error("Error connecting to server");
+//     } finally {
+//       setShowPermission(false); // close popup after action
+//     }
+//   };
+
+//   return (
+//     <div className="page-container">
+//       <main className="main-content">
+//         <form onSubmit={handleSubmit} className="space-y-6">
+//           <input
+//             type="text"
+//             name="title"
+//             placeholder="Blog Title"
+//             value={formData.title}
+//             onChange={handleChange}
+//             className="form-input"
+//             required
+//           />
+//           <input
+//             type="text"
+//             name="writer"
+//             placeholder="Writer"
+//             value={formData.writer}
+//             onChange={handleChange}
+//             className="form-input"
+//             required
+//           />
+//           <textarea
+//             name="description"
+//             placeholder="Description"
+//             value={formData.description}
+//             onChange={handleChange}
+//             className="form-textarea"
+//             required
+//           />
+//           <input
+//             type="file"
+//             name="image"
+//             accept="image/*"
+//             onChange={handleChange}
+//             className="form-input"
+//           />
+//           <Editor
+//             apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+//             value={formData.content}
+//             onEditorChange={handleEditorChange}
+//           />
+//           <button type="submit" className="submit-btn">
+//             <FaPaperPlane /> Submit Blog
+//           </button>
+//         </form>
+//       </main>
+
+//       <PermissionBox
+//         isOpen={showPermission}
+//         onConfirm={confirmCreate}
+//         onCancel={() => setShowPermission(false)}
+//       />
+//     </div>
+//   );
+// }
 "use client";
 import { useState } from "react";
 import { FaPaperPlane } from "react-icons/fa";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "sonner";
 import "../globals.css";
+import PermissionBox from "@/components/modal/Permission";
 import "./create.css";
 
 export default function CreateBlog() {
@@ -14,6 +142,9 @@ export default function CreateBlog() {
     image: null,
     content: "",
   });
+
+  const [showPermission, setShowPermission] = useState(false);
+
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -27,16 +158,13 @@ export default function CreateBlog() {
     setFormData((prev) => ({ ...prev, content }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const formattedContent = `<p>${formData.content}</p>`;
+  const confirmCreate = async () => {
     const blogData = {
       title: formData.title,
       writer: formData.writer,
       description: formData.description,
       image: formData.image ? formData.image.name : null,
-      content: formattedContent,
+      content: `<p>${formData.content}</p>`,
     };
 
     try {
@@ -48,15 +176,27 @@ export default function CreateBlog() {
 
       if (res.ok) {
         toast.success("Blog created successfully!");
-        setFormData({ title: "", writer: "", description: "", image: null, content: "" });
-        e.target.reset();
+        setFormData({
+          title: "",
+          writer: "",
+          description: "",
+          image: null,
+          content: "",
+        });
       } else {
         toast.error("Failed to create blog");
       }
     } catch (err) {
       console.error(err);
       toast.error("Error connecting to server");
+    } finally {
+      setShowPermission(false); // close popup after action
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setShowPermission(true); // open popup only
   };
 
   return (
@@ -64,7 +204,9 @@ export default function CreateBlog() {
       <main className="main-content">
         <div className="form-wrapper">
           <h1 className="form-title">Create New Blog</h1>
-          <p className="form-subtitle">Fill in the details below to publish your blog.</p>
+          <p className="form-subtitle">
+            Fill in the details below to publish your blog.
+          </p>
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title & Writer */}
             <div className="form-row">
@@ -178,6 +320,12 @@ export default function CreateBlog() {
           </form>
         </div>
       </main>
+      <PermissionBox
+        isOpen={showPermission}
+        onConfirm={confirmCreate}
+        onCancel={() => setShowPermission(false)}
+        action="create"
+      />
     </div>
   );
 }
