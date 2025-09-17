@@ -18,11 +18,11 @@ export default function LoginPage() {
       const data = await res.json();
 
       if (data.length > 0) {
-        alert("Login successful ✅");
+        alert("Login successful ");
         // redirect to dashboard
         window.location.href = "/dashboard";
       } else {
-        setError("Invalid email or password ❌");
+        setError("Invalid email or password");
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");

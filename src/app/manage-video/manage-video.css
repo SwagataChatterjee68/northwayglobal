@@ -1,35 +1,43 @@
 @import "tailwindcss";
 
-/* Wrapper */
+/* Container */
 .container {
-  @apply max-w-5xl mx-auto p-4 py-32;
+  @apply max-w-5xl mx-auto p-6 py-32;
+}
+
+.page-title {
+  @apply text-2xl font-bold mb-6 text-gray-800;
 }
 
 .input-wrapper {
-  @apply mb-6 flex gap-4 items-center;
+  @apply flex gap-3 items-center mb-6;
 }
 
 .file-input {
-  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 .submit-btn {
-  @apply px-4 py-2 bg-blue-500 text-white cursor-pointer rounded-md hover:bg-blue-600;
+  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer;
 }
 
-/* Video grid */
 .videos-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4;
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
 }
 
 .video-item {
-  @apply relative;
+  @apply relative bg-white shadow-md rounded-md overflow-hidden;
 }
 
 .video-preview {
-  @apply w-full h-48 object-cover rounded-md;
+  @apply w-full h-40 object-cover;
+}
+
+.video-name {
+  @apply text-sm text-center py-1;
 }
 
 .video-delete {
-  @apply absolute top-1 right-1 cursor-pointer bg-red-500 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs hover:bg-red-600;
+  @apply absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer;
 }
+

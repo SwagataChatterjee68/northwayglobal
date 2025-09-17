@@ -1,37 +1,43 @@
 /* Wrapper */
 @import "tailwindcss";
+
+/* Container */
 .container {
-  @apply max-w-5xl mx-auto p-4 py-32;
+  @apply max-w-5xl mx-auto p-6 py-32;
 }
 
 .page-title {
-  @apply text-2xl font-bold mb-4;
+  @apply text-2xl font-bold mb-6 text-gray-800;
 }
 
 .input-wrapper {
-  @apply flex flex-col sm:flex-row items-start sm:items-center gap-2 mb-6;
+  @apply flex gap-3 items-center mb-6;
 }
 
 .file-input {
-  @apply px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
 }
 
 .submit-btn {
-  @apply px-4 py-2 bg-blue-600  text-white rounded-md cursor-pointer hover:bg-blue-700;
+  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer;
 }
 
 .photos-grid {
-  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 w-xl mt-20;
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4;
 }
 
 .photo-item {
-  @apply relative;
+  @apply relative bg-white shadow-md rounded-md overflow-hidden;
 }
 
 .photo-img {
-  @apply w-full h-32 object-cover rounded-md;
+  @apply w-full h-32 object-cover;
+}
+
+.photo-name {
+  @apply text-sm text-center py-1;
 }
 
 .photo-delete {
-  @apply absolute top-1 right-1 bg-red-500 cursor-pointer text-white w-5 h-5 rounded-full flex items-center justify-center text-xs hover:bg-red-600;
+  @apply absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer;
 }

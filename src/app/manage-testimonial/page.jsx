@@ -39,7 +39,7 @@ export default function ManageTestimonials() {
       <h1 className="page-title">Manage Testimonials</h1>
 
       {testimonials.length === 0 ? (
-        <p className="empty-text">No testimonials available.</p>
+        <p className="empty-text">Loading...</p>
       ) : (
         <div className="card-grid">
           {testimonials.map((t) => (

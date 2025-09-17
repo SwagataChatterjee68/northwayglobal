@@ -4,22 +4,17 @@ import { toast } from "sonner";
 import "./manage-video.css";
 
 export default function ManageVideos() {
+  const [videos, setVideos] = useState([]);
   const [selectedVideos, setSelectedVideos] = useState([]);
-  const [uploadedVideos, setUploadedVideos] = useState([]);
   const fileInputRef = useRef(null);
 
-  // Load uploaded videos from localStorage on mount
+  // Fetch videos from json-server
   useEffect(() => {
-    const storedVideos = localStorage.getItem("uploadedVideos");
-    if (storedVideos) {
-      setUploadedVideos(JSON.parse(storedVideos));
-    }
+    fetch("https://json-server-lnkp.onrender.com/videos")
+      .then((res) => res.json())
+      .then((data) => setVideos(data))
+      .catch((err) => console.error("Error fetching videos:", err));
   }, []);
-
-  // Save uploaded videos to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("uploadedVideos", JSON.stringify(uploadedVideos));
-  }, [uploadedVideos]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -28,30 +23,51 @@ export default function ManageVideos() {
     const newVideos = files.map((file) => ({
       id: Date.now() + Math.random(),
       name: file.name,
-      url: URL.createObjectURL(file),
+      url: URL.createObjectURL(file), // preview only
     }));
 
     setSelectedVideos(newVideos);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!selectedVideos.length) {
-      toast.error("No videos selected!");
+      toast.error("Please select videos first!");
       return;
     }
-    setUploadedVideos((prev) => [...prev, ...selectedVideos]);
-    setSelectedVideos([]);
-    toast.success("Video(s) uploaded successfully!");
 
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    try {
+      for (const video of selectedVideos) {
+        await fetch("https://json-server-lnkp.onrender.com/videos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(video),
+        });
+      }
+
+      setVideos((prev) => [...prev, ...selectedVideos]);
+      setSelectedVideos([]);
+      toast.success("Video(s) uploaded successfully!");
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error uploading video(s)");
     }
   };
 
-  const handleDelete = (id) => {
-    const updated = uploadedVideos.filter((v) => v.id !== id);
-    setUploadedVideos(updated);
-    toast.success("Video removed!");
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`https://json-server-lnkp.onrender.com/videos/${id}`, {
+        method: "DELETE",
+      });
+      setVideos(videos.filter((v) => v.id !== id));
+      toast.success("Video deleted!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting video");
+    }
   };
 
   return (
@@ -72,15 +88,13 @@ export default function ManageVideos() {
         </button>
       </div>
 
-      {uploadedVideos.length > 0 && (
+      {/* Show uploaded videos */}
+      {videos.length > 0 && (
         <div className="videos-grid">
-          {uploadedVideos.map((video) => (
+          {videos.map((video) => (
             <div key={video.id} className="video-item">
-              <video
-                src={video.url}
-                className="video-preview"
-                controls
-              />
+              <video src={video.url} controls className="video-preview" />
+              <p className="video-name">{video.name}</p>
               <button
                 onClick={() => handleDelete(video.id)}
                 className="video-delete"

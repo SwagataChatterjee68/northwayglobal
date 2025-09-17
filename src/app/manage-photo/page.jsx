@@ -4,22 +4,17 @@ import { toast } from "sonner";
 import "./manage-photo.css";
 
 export default function ManagePhotos() {
+  const [photos, setPhotos] = useState([]);
   const [selectedPhotos, setSelectedPhotos] = useState([]);
-  const [uploadedPhotos, setUploadedPhotos] = useState([]);
-  const fileInputRef = useRef(null); // reference to clear input
+  const fileInputRef = useRef(null);
 
-  // Load uploaded photos from localStorage on mount
+  // Fetch photos from json-server
   useEffect(() => {
-    const storedPhotos = localStorage.getItem("uploadedPhotos");
-    if (storedPhotos) {
-      setUploadedPhotos(JSON.parse(storedPhotos));
-    }
+    fetch("https://json-server-lnkp.onrender.com/photos")
+      .then((res) => res.json())
+      .then((data) => setPhotos(data))
+      .catch((err) => console.error("Error fetching photos:", err));
   }, []);
-
-  // Save uploaded photos to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem("uploadedPhotos", JSON.stringify(uploadedPhotos));
-  }, [uploadedPhotos]);
 
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
@@ -34,32 +29,51 @@ export default function ManagePhotos() {
     setSelectedPhotos(newPhotos);
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!selectedPhotos.length) {
-      toast.error("No photos selected!");
+      toast.error("Please select photos first!");
       return;
     }
-    setUploadedPhotos((prev) => [...prev, ...selectedPhotos]);
-    setSelectedPhotos([]);
-    toast.success("Photo(s) uploaded successfully!");
 
-    // Clear the file input
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+    try {
+      for (const photo of selectedPhotos) {
+        await fetch("https://json-server-lnkp.onrender.com/photos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(photo),
+        });
+      }
+
+      setPhotos((prev) => [...prev, ...selectedPhotos]);
+      setSelectedPhotos([]);
+      toast.success("Photo(s) uploaded successfully!");
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error uploading photo(s)");
     }
   };
 
-  const handleDelete = (id) => {
-    const updated = uploadedPhotos.filter((p) => p.id !== id);
-    setUploadedPhotos(updated);
-    toast.success("Photo removed!");
+  const handleDelete = async (id) => {
+    try {
+      await fetch(`https://json-server-lnkp.onrender.com/photos/${id}`, {
+        method: "DELETE",
+      });
+      setPhotos(photos.filter((p) => p.id !== id));
+      toast.success("Photo deleted!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting photo");
+    }
   };
 
   return (
     <div className="container">
       <h1 className="page-title">Manage Photos</h1>
 
-      {/* File input */}
       <div className="input-wrapper">
         <input
           ref={fileInputRef}
@@ -70,16 +84,17 @@ export default function ManagePhotos() {
           className="file-input"
         />
         <button onClick={handleUpload} className="submit-btn">
-          Upload Photos
+          Upload
         </button>
       </div>
 
-      {/* Show uploaded photos in grid */}
-      {uploadedPhotos.length > 0 && (
+      {/* Show uploaded photos */}
+      {photos.length > 0 && (
         <div className="photos-grid">
-          {uploadedPhotos.map((photo) => (
+          {photos.map((photo) => (
             <div key={photo.id} className="photo-item">
               <img src={photo.url} alt={photo.name} className="photo-img" />
+              <p className="photo-name">{photo.name}</p>
               <button
                 onClick={() => handleDelete(photo.id)}
                 className="photo-delete"

@@ -1,0 +1,48 @@
+@import "tailwindcss";
+.container {
+  @apply max-w-6xl mx-auto p-6;
+}
+
+.page-title {
+  @apply text-3xl font-bold mb-8;
+}
+
+.section {
+  @apply mb-12;
+}
+
+.section-title {
+  @apply text-xl font-semibold mb-4;
+}
+
+.grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6;
+}
+
+.card {
+  @apply bg-white shadow-md rounded-xl p-4 relative;
+}
+
+.card-title {
+  @apply font-bold text-lg mb-1;
+}
+
+.card-subtitle {
+  @apply text-gray-500 text-sm mb-2;
+}
+
+.card-desc {
+  @apply text-gray-600 text-sm;
+}
+
+.photo {
+  @apply w-full h-40 object-cover rounded-lg mb-2;
+}
+
+.video {
+  @apply w-full h-40 rounded-lg mb-2;
+}
+
+.view-more {
+  @apply text-blue-600 hover:underline mt-2 inline-block;
+}
