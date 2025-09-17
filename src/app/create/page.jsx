@@ -8,16 +8,18 @@ import PermissionBox from "@/components/modal/Permission";
 import "./create.css";
 
 export default function CreateBlog() {
+  // Change 1: Updated state keys to match the API's JSON structure.
+  // 'description' -> 'short_summary', 'image' -> 'thumbnail', and added 'pdf_file'.
   const [formData, setFormData] = useState({
     title: "",
     writer: "",
-    description: "",
-    image: null,
+    short_summary: "",
     content: "",
+    pdf_file: null,
+    thumbnail: null,
   });
 
   const [showPermission, setShowPermission] = useState(false);
-
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -31,31 +33,44 @@ export default function CreateBlog() {
     setFormData((prev) => ({ ...prev, content }));
   };
 
+  // Change 2: Switched to FormData for file uploads.
+  // This is crucial because you're sending files, not just JSON.
   const confirmCreate = async () => {
-    const blogData = {
-      title: formData.title,
-      writer: formData.writer,
-      description: formData.description,
-      image: formData.image ? formData.image.name : null,
-      content: `<p>${formData.content}</p>`,
-    };
+    const data = new FormData();
+    data.append("title", formData.title);
+    data.append("writer", formData.writer);
+    data.append("short_summary", formData.short_summary);
+    data.append("content", formData.content);
+
+    // Conditionally append files if they exist.
+    if (formData.thumbnail) {
+      data.append("thumbnail", formData.thumbnail);
+    }
+    if (formData.pdf_file) {
+      data.append("pdf_file", formData.pdf_file);
+    }
 
     try {
-      const res = await fetch("https://json-server-lnkp.onrender.com/blogs", {
+      // Change 3: Updated the API endpoint and removed the Content-Type header.
+      // The browser automatically sets the correct 'multipart/form-data' header when you send FormData.
+      const res = await fetch("https://nortway.mrshakil.com/api/blogs/blog/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(blogData),
+        body: data,
       });
 
       if (res.ok) {
         toast.success("Blog created successfully!");
+        // Change 4: Reset the state with the updated keys.
         setFormData({
           title: "",
           writer: "",
-          description: "",
-          image: null,
+          short_summary: "",
           content: "",
+          pdf_file: null,
+          thumbnail: null,
         });
+        // You might need to clear the file input fields manually if the browser doesn't.
+        document.querySelector('form').reset();
       } else {
         toast.error("Failed to create blog");
       }
@@ -63,13 +78,13 @@ export default function CreateBlog() {
       console.error(err);
       toast.error("Error connecting to server");
     } finally {
-      setShowPermission(false); // close popup after action
+      setShowPermission(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setShowPermission(true); // open popup only
+    setShowPermission(true);
   };
 
   return (
@@ -107,28 +122,40 @@ export default function CreateBlog() {
               </div>
             </div>
 
-            {/* Description */}
+            {/* Change 5: Updated the textarea to match the 'short_summary' state key. */}
             <div className="form-group">
-              <label className="form-label">Short Description</label>
+              <label className="form-label">Short Summary</label>
               <textarea
-                name="description"
+                name="short_summary"
                 className="form-textarea"
-                value={formData.description}
+                value={formData.short_summary}
                 onChange={handleChange}
                 required
               />
             </div>
 
-            {/* Image */}
-            <div className="form-group">
-              <label className="form-label">Upload Image</label>
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                className="form-input"
-                onChange={handleChange}
-              />
+            {/* Change 6: Updated file inputs for 'thumbnail' and added one for 'pdf_file'. */}
+            <div className="form-row">
+              <div className="form-group">
+                <label className="form-label">Upload Thumbnail</label>
+                <input
+                  type="url"
+                  name="thumbnail"
+                  placeholder="Image URL"
+                  className="form-input"
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Upload PDF (Optional)</label>
+                <input
+                  type="url"
+                  name="pdf_file"
+                  placeholder="PDF URL"
+                  className="form-input"
+                  onChange={handleChange}
+                />
+              </div>
             </div>
 
             {/* Editor */}
@@ -140,50 +167,11 @@ export default function CreateBlog() {
                 value={formData.content}
                 onEditorChange={handleEditorChange}
                 init={{
+                  height: 500, // Added for better default size
                   menubar: false,
                   branding: false,
-                  plugins: [
-                    "anchor",
-                    "autolink",
-                    "charmap",
-                    "codesample",
-                    "emoticons",
-                    "link",
-                    "lists",
-                    "media",
-                    "searchreplace",
-                    "table",
-                    "visualblocks",
-                    "wordcount",
-                    "checklist",
-                    "mediaembed",
-                    "casechange",
-                    "formatpainter",
-                    "pageembed",
-                    "a11ychecker",
-                    "tinymcespellchecker",
-                    "permanentpen",
-                    "powerpaste",
-                    "advtable",
-                    "advcode",
-                    "advtemplate",
-                    "mentions",
-                    "tableofcontents",
-                    "footnotes",
-                    "mergetags",
-                    "autocorrect",
-                    "typography",
-                    "inlinecss",
-                    "markdown",
-                    "importword",
-                    "exportword",
-                    "exportpdf",
-                  ],
-                  toolbar:
-                    "undo redo | blocks fontfamily fontsize | " +
-                    "bold italic underline strikethrough | link media table mergetags | " +
-                    "align lineheight | checklist numlist bullist indent outdent | " +
-                    "emoticons charmap | removeformat",
+                  plugins: "anchor autolink charmap codesample emoticons link lists media searchreplace table visualblocks wordcount checklist",
+                  toolbar: "undo redo | blocks | bold italic underline strikethrough | link media table | align | checklist numlist bullist indent outdent | emoticons charmap | removeformat",
                 }}
               />
             </div>

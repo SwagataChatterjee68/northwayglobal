@@ -4,9 +4,8 @@
   @apply flex min-h-screen py-20 p-8 rounded-lg;
 };
 
-
 .main-content {
-  @apply flex-1 p-6 overflow-x-auto;
+  @apply  flex-1 p-6 ;
 }
 
 .page-title {

@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import "./navbar.css";
-import Topbar from "../topbar/Topbar";
 
 const menuItems = [
   { name: "Create Blog", icon: FaPlus, href: "/create" },
@@ -27,7 +26,6 @@ export default function DashboardNavbar() {
 
   return (
     <>
-    <Topbar/>
       {/* Desktop Sidebar */}
       <aside className="sidebar hidden md:flex flex-col fixed top-0 left-0 h-full w-64">
         

@@ -8,27 +8,28 @@ export default function ManageVideos() {
   const [selectedVideos, setSelectedVideos] = useState([]);
   const fileInputRef = useRef(null);
 
-  // Fetch videos from json-server
+  // Fetch videos from backend
   useEffect(() => {
-    fetch("https://json-server-lnkp.onrender.com/videos")
+    fetch("https://nortway.mrshakil.com/api/gallery/videos")
       .then((res) => res.json())
       .then((data) => setVideos(data))
       .catch((err) => console.error("Error fetching videos:", err));
   }, []);
 
+  // Select files
   const handleFileChange = (e) => {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
     const newVideos = files.map((file) => ({
-      id: Date.now() + Math.random(),
-      name: file.name,
-      url: URL.createObjectURL(file), // preview only
+      title: file.name,                     // title instead of name
+      videoUrl: URL.createObjectURL(file),  // videoUrl instead of url
     }));
 
     setSelectedVideos(newVideos);
   };
 
+  // Upload selected videos
   const handleUpload = async () => {
     if (!selectedVideos.length) {
       toast.error("Please select videos first!");
@@ -37,14 +38,21 @@ export default function ManageVideos() {
 
     try {
       for (const video of selectedVideos) {
-        await fetch("https://json-server-lnkp.onrender.com/videos", {
+        const res = await fetch("https://nortway.mrshakil.com/api/gallery/videos", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(video),
+          body: JSON.stringify({
+            title: video.title,
+            videoUrl: video.videoUrl,
+          }),
         });
+
+        if (!res.ok) throw new Error("Upload failed");
+
+        const savedVideo = await res.json();
+        setVideos((prev) => [...prev, savedVideo]);
       }
 
-      setVideos((prev) => [...prev, ...selectedVideos]);
       setSelectedVideos([]);
       toast.success("Video(s) uploaded successfully!");
 
@@ -57,9 +65,10 @@ export default function ManageVideos() {
     }
   };
 
+  // Delete video
   const handleDelete = async (id) => {
     try {
-      await fetch(`https://json-server-lnkp.onrender.com/videos/${id}`, {
+      await fetch(`https://nortway.mrshakil.com/api/gallery/videos/${id}`, {
         method: "DELETE",
       });
       setVideos(videos.filter((v) => v.id !== id));
@@ -93,8 +102,8 @@ export default function ManageVideos() {
         <div className="videos-grid">
           {videos.map((video) => (
             <div key={video.id} className="video-item">
-              <video src={video.url} controls className="video-preview" />
-              <p className="video-name">{video.name}</p>
+              <video src={video.videoUrl} controls className="video-preview" />
+              <p className="video-name">{video.title}</p>
               <button
                 onClick={() => handleDelete(video.id)}
                 className="video-delete"

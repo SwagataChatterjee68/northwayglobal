@@ -1,58 +1,58 @@
-/* Navbar */
 @import "tailwindcss";
 
-/* Form Card */
-.form-wrapper {
-  @apply  px-8 rounded-lg py-20;
-}
-.form-title {
-  @apply text-2xl font-bold mb-4 ;
-}
-.form-subtitle {
-  @apply text-gray-500 mb-6 ;
-}
-.form-group {
-  @apply flex flex-col space-y-2 w-full;
-}
-.form-row {
-  @apply flex flex-col md:flex-row gap-4 w-full;
-}
-.form-label {
-  @apply text-gray-700 font-medium;
-}
-.form-input {
-  @apply border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2  w-full;
-}
-.form-textarea {
-  @apply border border-gray-300 rounded-lg p-3 h-32 focus:outline-none  w-full;
-}
-
-.message-success {
-  @apply text-green-600 mt-4 text-center font-medium;
-}
+/* General Page Layout */
 .page-container {
-  @apply flex flex-col min-h-screen max-w-7xl mx-auto;
+  @apply flex min-h-screen max-w-7xl flex-col;
 }
 
 .main-content {
-  @apply flex-grow p-10 overflow-y-auto;
+  @apply flex-grow overflow-y-auto p-10;
+}
+
+/* Form Container & Typography */
+.form-wrapper {
+  @apply rounded-lg px-8;
+}
+
+.form-title {
+  @apply mb-4 text-2xl font-bold;
+}
+
+.form-subtitle {
+  @apply mb-6 text-gray-500;
+}
+
+/* Form Structure & Fields */
+.form-row {
+  @apply flex w-full flex-col gap-4 md:flex-row;
+}
+
+.form-group {
+  @apply flex w-full flex-col space-y-2;
 }
 
 .form-label {
-  @apply mb-2 font-medium;
+  @apply font-medium text-gray-700;
 }
 
-.form-input, .form-textarea {
-  @apply border border-gray-300 rounded p-2 focus:outline-none ;
+.form-input {
+  @apply w-full rounded-lg border border-gray-300 p-3 focus:outline-none focus:ring-2;
 }
 
+.form-textarea {
+  @apply h-32 w-full rounded-lg border border-gray-300 p-3 focus:outline-none;
+}
+
+/* Buttons & Feedback Messages */
 .submit-btn {
-  @apply flex items-center gap-2 bg-gray-200 cursor-pointer px-4 py-2 rounded hover:bg-gray-300;
+  @apply flex cursor-pointer items-center gap-2 rounded bg-gray-200 px-4 py-2 hover:bg-gray-300;
 }
 
 .message-success {
-  @apply mt-4 text-green-600 font-medium;
+  @apply mt-4 text-center font-medium text-green-600;
 }
-#my-tinymce-editor{
-  @apply h-72; 
+
+/* Specific Component Overrides */
+#my-tinymce-editor {
+  @apply h-72;
 }

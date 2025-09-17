@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import "./manage-blog.css";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; 
+import { toast } from "sonner";
 import PermissionBox from "@/components/modal/Permission";
 
 export default function ManageBlogs() {
@@ -11,14 +11,15 @@ export default function ManageBlogs() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // modal state
+  // Modal state
   const [showPermission, setShowPermission] = useState(false);
   const [selectedBlogId, setSelectedBlogId] = useState(null);
 
   const fetchBlogs = async () => {
     try {
       setLoading(true);
-      const res = await fetch("https://json-server-lnkp.onrender.com/blogs");
+      // 1. Updated the fetch URL to your new API endpoint
+      const res = await fetch("https://nortway.mrshakil.com/api/blogs/blog/");
       if (res.ok) {
         const data = await res.json();
         setBlogs(data);
@@ -37,22 +38,24 @@ export default function ManageBlogs() {
     fetchBlogs();
   }, []);
 
-  // open modal for delete
+  // Open modal for delete confirmation
   const confirmDelete = (id) => {
     setSelectedBlogId(id);
     setShowPermission(true);
   };
 
-  // execute delete when confirmed
+  // Execute delete when confirmed
   const handleDelete = async () => {
     if (!selectedBlogId) return;
     try {
-      const res = await fetch(
-        `https://json-server-lnkp.onrender.com/blogs/${selectedBlogId}`,
-        {
-          method: "DELETE",
-        }
-      );
+      // 2. Updated the DELETE URL to match your API structure
+      const res = await fetch(`/api/blogs/blog/${selectedBlogId}/`, {
+        method: "DELETE",
+        // Note: If your API requires authentication, you may need to add headers here
+        // headers: { 'Authorization': `Bearer YOUR_TOKEN_HERE` }
+      });
+
+      // A successful DELETE often returns status 204 (No Content)
       if (res.ok) {
         setBlogs(blogs.filter((blog) => blog.id !== selectedBlogId));
         toast.success("Blog deleted successfully!");
@@ -68,8 +71,8 @@ export default function ManageBlogs() {
     }
   };
 
-  const handleUpdate = (id) => {
-    router.push(`/update/${id}`);
+  const handleUpdate = (blog_id) => {
+    router.push(`update/${blog_id}`);
   };
 
   return (
@@ -83,7 +86,8 @@ export default function ManageBlogs() {
               <tr>
                 <th>Title</th>
                 <th>Writer</th>
-                <th>Description</th>
+                {/* 3. Changed header from "Description" to "Summary" */}
+                <th>Summary</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -99,7 +103,8 @@ export default function ManageBlogs() {
                   <tr key={blog.id}>
                     <td>{blog.title}</td>
                     <td>{blog.writer}</td>
-                    <td>{blog.description}</td>
+                    {/* 4. Changed blog.description to blog.short_summary */}
+                    <td>{blog.short_summary}</td>
                     <td className="actions">
                       <button
                         className="btn-update"

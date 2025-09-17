@@ -1,0 +1,18 @@
+/* app/_components/AuthWrapper.css */
+@import "tailwindcss";
+
+.loading-container {
+  @apply flex justify-center items-center h-screen;
+}
+
+.loading-text {
+  @apply text-xl;
+}
+
+.dashboard-layout {
+  @apply grid lg:grid-cols-[20%_80%] xl:grid-cols-[15%_85%];
+}
+
+.main-content-area {
+  @apply p-4 sm:p-6 lg:p-8;
+}
