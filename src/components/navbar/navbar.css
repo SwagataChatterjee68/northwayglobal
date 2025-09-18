@@ -10,13 +10,13 @@
 }
 
 .logo {
-  @apply text-2xl object-cover text-center mb-8 border-b border-white/20 pb-2;
+  @apply w-fit ;
 }
 
 /* Nav container */
-.sidebar-nav {
+/* .sidebar-nav {
   @apply flex flex-col gap-2 ;
-}
+} */
 
 /* Nav item */
 .sidebar-item {

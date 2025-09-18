@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import "./navbar.css";
-import Topbar from "../topbar/Topbar";
 
 const menuItems = [
   { name: "Create Blog", icon: FaPlus, href: "/create" },
@@ -26,42 +25,46 @@ export default function DashboardNavbar() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <>
-      {/* Desktop Sidebar */}
-      <aside className="sidebar hidden md:flex flex-col fixed top-0 left-0 h-full w-64">
-        
-        <img src="/logo.jpeg" className="logo"  />
-        <nav className="sidebar-nav">
-          {menuItems.map((item) => (
-            <Link key={item.name} href={item.href} className="sidebar-item">
-              <item.icon className="sidebar-icon" />
-              <span>{item.name}</span>
-            </Link>
-          ))}
-        </nav>
-      </aside>
-      <Topbar/>
+    <aside className="p-10 fixed top-0 left-0 w-auto z-50 ">
+      {/* Logo */}
+      <div className="mb-10">
+        <img src="/logo.jpeg" className="logo " alt="Logo" />
+      </div>
 
-      {/* Mobile Toggle */}
-      <div className="md:hidden fixed top-4 left-4 z-50">
+      {/* Desktop Sidebar */}
+      <nav className="hidden md:flex flex-col  space-y-8 ">
+        {menuItems.map((item) => (
+          <Link
+            key={item.name}
+            href={item.href}
+            className="flex items-center text-black/80 hover:bg-[#FF9100] hover:text-white hover:py-2 hover:px-4 rounded space-x-2 transition-all duration-300 ease-in-out  "
+          >
+            <item.icon className="sidebar-icon" />
+            <span>{item.name}</span>
+          </Link>
+        ))}
+      </nav>
+
+      {/* Mobile Toggle Button */}
+      {/* <div className="md:hidden absolute top-4 left-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="menu-toggle"
+          className="p-2 rounded bg-gray-200"
         >
           {isOpen ? <FiX /> : <FiMenu />}
         </button>
-      </div>
+      </div> */}
 
       {/* Mobile Sidebar */}
-      {isOpen && (
-        <aside className="sidebar-mobile md:hidden">
-          <h2 className="sidebar-title">Dashboard</h2>
-          <nav className="sidebar-nav">
+      {/* {isOpen && (
+        <div className="md:hidden absolute top-0 left-0 w-64 h-screen bg-white shadow-lg p-4 z-50">
+          <h2 className="text-lg font-semibold mb-4">Dashboard</h2>
+          <nav className="flex flex-col space-y-3">
             {menuItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="sidebar-item"
+                className="flex items-center space-x-2 hover:text-green-600"
                 onClick={() => setIsOpen(false)}
               >
                 <item.icon className="sidebar-icon" />
@@ -69,8 +72,8 @@ export default function DashboardNavbar() {
               </Link>
             ))}
           </nav>
-        </aside>
-      )}
-    </>
+        </div>
+      )} */}
+    </aside>
   );
 }

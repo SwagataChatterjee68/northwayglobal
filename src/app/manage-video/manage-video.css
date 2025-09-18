@@ -1,9 +1,7 @@
 @import "tailwindcss";
 
 /* Container */
-.container {
-  @apply max-w-5xl mx-auto p-6 py-32;
-}
+
 
 .page-title {
   @apply text-2xl font-bold mb-6 text-gray-800;

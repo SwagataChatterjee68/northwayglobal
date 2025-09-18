@@ -2,7 +2,7 @@
 
 /* Container for the whole page */
 .container {
-  @apply max-w-6xl mx-auto px-4 py-8;
+  @apply max-w-7xl px-16 py-16;
 }
 
 /* Page titles */
@@ -64,10 +64,10 @@
 }
 
 /* Dashboard layout (if needed in AuthWrapper) */
-.dashboard-layout {
+/* .dashboard-layout {
   @apply flex flex-col min-h-screen bg-gray-50;
-}
+} */
 
-.main-content-area {
+/* .main-content-area {
   @apply flex-1 p-6;
-}
+} */

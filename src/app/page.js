@@ -36,7 +36,7 @@ export default function HomePage() {
         setVideos(videoData.slice(-3).reverse());
         setBlogs(blogData.slice(-3).reverse());
 
-        toast.success("Dashboard data loaded successfully!");
+        // toast.success("Dashboard data loaded successfully!");
       } catch (err) {
         toast.error("Failed to load data");
         console.error(err);
@@ -55,7 +55,7 @@ export default function HomePage() {
   return (
     <>
       <Toaster position="top-center" richColors />
-      <Topbar text="Home" DashboardIcon={IoHomeOutline} />
+      <Topbar textTopbar="Home" DashboardIcon={IoHomeOutline} />
 
       <div className="container">
         {/* Testimonials */}

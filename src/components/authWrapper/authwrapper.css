@@ -9,10 +9,10 @@
   @apply text-xl;
 }
 
-.dashboard-layout {
-  @apply grid lg:grid-cols-[20%_80%] xl:grid-cols-[15%_85%];
-}
+/* .dashboard-layout {
+  @apply grid lg:grid-cols-[20%_80%] ;
+} */
 
-.main-content-area {
+/* .main-content-area {
   @apply p-4 sm:p-6 lg:p-8;
-}
+} */
