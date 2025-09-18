@@ -1,123 +1,110 @@
 "use client";
-
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 import "./manage-photo.css";
 
 export default function ManagePhotos() {
   const [photos, setPhotos] = useState([]);
-  const [selectedFiles, setSelectedFiles] = useState([]);
-  const [previews, setPreviews] = useState([]);
-  const fileInputRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [file, setFile] = useState(null);
+  const titleRef = useRef(null);
+  const fileRef = useRef(null);
 
-  const API_BASE = "https://nortway.mrshakil.com/api/gallery/photo/";
+  // Get token from localStorage
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
-  // Fetch existing photos
+  // Fetch photos from backend
   useEffect(() => {
-    const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("Unauthorized! Please login first.");
+      toast.error("No token found. Please login first.");
       return;
     }
 
-    fetch(API_BASE, { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
+    fetch("https://nortway.mrshakil.com/api/gallery/photo/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized or fetch failed");
+        return res.json();
+      })
       .then((data) =>
         setPhotos(
           data.map((p) => ({
             ...p,
-            photo: p.photo || "/placeholder.jpg", // fallback if photo is missing
-            title: p.title || "Untitled",
+            photo: p.photo ? `https://nortway.mrshakil.com${p.photo}` : null,
           }))
         )
       )
       .catch((err) => console.error("Error fetching photos:", err));
-  }, []);
+  }, [token]);
 
-  // Update previews for newly selected files
-  useEffect(() => {
-    const previewUrls = selectedFiles.map((file) => URL.createObjectURL(file));
-    setPreviews(previewUrls);
-
-    return () => previewUrls.forEach((url) => URL.revokeObjectURL(url));
-  }, [selectedFiles]);
-
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    setSelectedFiles(files);
-  };
-
+  // Upload photo
   const handleUpload = async () => {
-    if (!selectedFiles.length) {
-      toast.error("Please select photos first!");
+    if (!title || !file) {
+      toast.error("Please enter title and select a photo!");
       return;
     }
-
-    const token = localStorage.getItem("token");
     if (!token) {
-      toast.error("Unauthorized! Please login first.");
+      toast.error("No token found. Please login first.");
       return;
     }
 
     try {
-      const uploadedPhotos = [];
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("image", file);
 
-      for (const file of selectedFiles) {
-        const formData = new FormData();
-        formData.append("image", file);
-        formData.append("title", file.name);
-
-        const res = await fetch(API_BASE, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        });
-
-        if (!res.ok) {
-          const errData = await res.json();
-          toast.error(errData.detail || "Failed to upload photo");
-          continue;
-        }
-
-        const savedPhoto = await res.json();
-        uploadedPhotos.push({
-          ...savedPhoto,
-          photo: savedPhoto.photo || "/placeholder.jpg",
-          title: savedPhoto.title || file.name,
-        });
-      }
-
-      setPhotos((prev) => [...prev, ...uploadedPhotos]);
-      setSelectedFiles([]);
-      setPreviews([]);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-      toast.success("Photo(s) uploaded successfully!");
-    } catch (err) {
-      console.error(err);
-      toast.error("Error uploading photo(s)");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Unauthorized! Please login first.");
-      return;
-    }
-
-    try {
-      const res = await fetch(`${API_BASE}${id}/`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
+      const res = await fetch("https://nortway.mrshakil.com/api/gallery/photo/", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
       });
 
-      if (res.ok) {
-        setPhotos((prev) => prev.filter((p) => p.id !== id));
-        toast.success("Photo deleted!");
-      } else {
-        const errData = await res.json();
-        toast.error(errData.detail || "Failed to delete photo");
-      }
+      if (!res.ok) throw new Error("Upload failed");
+
+      const savedPhoto = await res.json();
+      setPhotos((prev) => [
+        ...prev,
+        {
+          ...savedPhoto,
+          photo: savedPhoto.photo
+            ? `https://nortway.mrshakil.com${savedPhoto.photo}`
+            : null,
+        },
+      ]);
+
+      setTitle("");
+      setFile(null);
+      if (titleRef.current) titleRef.current.value = "";
+      if (fileRef.current) fileRef.current.value = "";
+
+      toast.success("Photo uploaded successfully!");
+    } catch (err) {
+      console.error(err);
+      toast.error("Error uploading photo");
+    }
+  };
+
+  // Delete photo
+  const handleDelete = async (id) => {
+    if (!token) {
+      toast.error("No token found. Please login first.");
+      return;
+    }
+
+    try {
+      await fetch(`https://nortway.mrshakil.com/api/gallery/photo/${id}/`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPhotos(photos.filter((p) => p.id !== id));
+      toast.success("Photo deleted!");
     } catch (err) {
       console.error(err);
       toast.error("Error deleting photo");
@@ -128,14 +115,19 @@ export default function ManagePhotos() {
     <div className="container">
       <h1 className="page-title">Manage Photos</h1>
 
-      {/* Upload Section */}
       <div className="input-wrapper">
         <input
-          ref={fileInputRef}
+          ref={titleRef}
+          type="text"
+          placeholder="Enter photo title"
+          onChange={(e) => setTitle(e.target.value)}
+          className="file-input"
+        />
+        <input
+          ref={fileRef}
           type="file"
           accept="image/*"
-          multiple
-          onChange={handleFileChange}
+          onChange={(e) => setFile(e.target.files[0])}
           className="file-input"
         />
         <button onClick={handleUpload} className="submit-btn">
@@ -143,34 +135,21 @@ export default function ManagePhotos() {
         </button>
       </div>
 
-      {/* Previews for newly selected files */}
-      {previews.length > 0 && (
-        <div className="photos-grid">
-          {previews.map((url, idx) => (
-            <div key={idx} className="photo-item">
-              <img src={url} alt={selectedFiles[idx]?.name || "Preview"} className="photo-img" />
-              <p className="photo-name">{selectedFiles[idx]?.name || "Preview"}</p>
-            </div>
-          ))}
-        </div>
-      )}
-
       {/* Show uploaded photos */}
       {photos.length > 0 && (
         <div className="photos-grid">
           {photos.map((photo) => (
             <div key={photo.id} className="photo-item">
-              <img
-                src={
-                  photo.photo?.startsWith("http")
-                    ? photo.photo
-                    : `https://nortway.mrshakil.com${photo.photo}`
-                }
-                alt={photo.title}
-                className="photo-img"
-              />
+              {photo.photo ? (
+                <img src={photo.photo} alt={photo.title} className="photo-preview" />
+              ) : (
+                <div className="photo-missing">No image</div>
+              )}
               <p className="photo-name">{photo.title}</p>
-              <button onClick={() => handleDelete(photo.id)} className="photo-delete">
+              <button
+                onClick={() => handleDelete(photo.id)}
+                className="photo-delete"
+              >
                 ❌
               </button>
             </div>

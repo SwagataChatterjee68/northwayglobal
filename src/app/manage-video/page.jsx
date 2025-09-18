@@ -5,71 +5,88 @@ import "./manage-video.css";
 
 export default function ManageVideos() {
   const [videos, setVideos] = useState([]);
-  const [selectedVideos, setSelectedVideos] = useState([]);
-  const fileInputRef = useRef(null);
+  const [title, setTitle] = useState("");
+  const [videoUrl, setVideoUrl] = useState("");
+  const titleRef = useRef(null);
+  const urlRef = useRef(null);
+
+  // Get token from localStorage
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
 
   // Fetch videos from backend
   useEffect(() => {
-    fetch("https://nortway.mrshakil.com/api/gallery/video")
-      .then((res) => res.json())
+    if (!token) {
+      toast.error("No token found. Please login first.");
+      return;
+    }
+
+    fetch("https://nortway.mrshakil.com/api/gallery/video/", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized or fetch failed");
+        return res.json();
+      })
       .then((data) => setVideos(data))
       .catch((err) => console.error("Error fetching videos:", err));
-  }, []);
+  }, [token]);
 
-  // Select files
-  const handleFileChange = (e) => {
-    const files = Array.from(e.target.files);
-    if (!files.length) return;
-
-    const newVideos = files.map((file) => ({
-      title: file.name,                     // title instead of name
-      videoUrl: URL.createObjectURL(file),  // videoUrl instead of url
-    }));
-
-    setSelectedVideos(newVideos);
-  };
-
-  // Upload selected videos
+  // Upload video
   const handleUpload = async () => {
-    if (!selectedVideos.length) {
-      toast.error("Please select videos first!");
+    if (!title || !videoUrl) {
+      toast.error("Please enter title and video URL!");
+      return;
+    }
+    if (!token) {
+      toast.error("No token found. Please login first.");
       return;
     }
 
     try {
-      for (const video of selectedVideos) {
-        const res = await fetch("https://nortway.mrshakil.com/api/gallery/video", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: video.title,
-            videoUrl: video.videoUrl,
-          }),
-        });
+      const res = await fetch("https://nortway.mrshakil.com/api/gallery/video/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          title: title,
+          video_url: videoUrl,
+        }),
+      });
 
-        if (!res.ok) throw new Error("Upload failed");
+      if (!res.ok) throw new Error("Upload failed");
 
-        const savedVideo = await res.json();
-        setVideos((prev) => [...prev, savedVideo]);
-      }
+      const savedVideo = await res.json();
+      setVideos((prev) => [...prev, savedVideo]);
 
-      setSelectedVideos([]);
-      toast.success("Video(s) uploaded successfully!");
+      setTitle("");
+      setVideoUrl("");
+      if (titleRef.current) titleRef.current.value = "";
+      if (urlRef.current) urlRef.current.value = "";
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      toast.success("Video uploaded successfully!");
     } catch (err) {
       console.error(err);
-      toast.error("Error uploading video(s)");
+      toast.error("Error uploading video");
     }
   };
 
   // Delete video
   const handleDelete = async (id) => {
+    if (!token) {
+      toast.error("No token found. Please login first.");
+      return;
+    }
+
     try {
-      await fetch(`https://nortway.mrshakil.com/api/gallery/video/${id}`, {
+      await fetch(`https://nortway.mrshakil.com/api/gallery/video/${id}/`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
       setVideos(videos.filter((v) => v.id !== id));
       toast.success("Video deleted!");
@@ -85,11 +102,17 @@ export default function ManageVideos() {
 
       <div className="input-wrapper">
         <input
-          ref={fileInputRef}
-          type="file"
-          accept="video/*"
-          multiple
-          onChange={handleFileChange}
+          ref={titleRef}
+          type="text"
+          placeholder="Enter video title"
+          onChange={(e) => setTitle(e.target.value)}
+          className="file-input"
+        />
+        <input
+          ref={urlRef}
+          type="text"
+          placeholder="Enter video URL"
+          onChange={(e) => setVideoUrl(e.target.value)}
           className="file-input"
         />
         <button onClick={handleUpload} className="submit-btn">
@@ -102,7 +125,7 @@ export default function ManageVideos() {
         <div className="videos-grid">
           {videos.map((video) => (
             <div key={video.id} className="video-item">
-              <video src={video.videoUrl} controls className="video-preview" />
+              <video src={video.video_url} controls className="video-preview" />
               <p className="video-name">{video.title}</p>
               <button
                 onClick={() => handleDelete(video.id)}
