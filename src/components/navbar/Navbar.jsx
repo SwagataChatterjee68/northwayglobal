@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import { FiMenu, FiX } from "react-icons/fi";
 import "./navbar.css";
+import Topbar from "../topbar/Topbar";
 
 const menuItems = [
   { name: "Create Blog", icon: FaPlus, href: "/create" },
@@ -39,6 +40,7 @@ export default function DashboardNavbar() {
           ))}
         </nav>
       </aside>
+      <Topbar/>
 
       {/* Mobile Toggle */}
       <div className="md:hidden fixed top-4 left-4 z-50">

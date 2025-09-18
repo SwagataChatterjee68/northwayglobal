@@ -1,47 +1,59 @@
 @import "tailwindcss";
 
-/* Container */
 .container {
-  @apply max-w-5xl mx-auto p-6 py-32;
+  @apply max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-md;
 }
 
 .page-title {
-  @apply text-2xl font-bold mb-6;
+  @apply text-3xl font-bold mb-6 text-center;
 }
 
 .empty-text {
-  @apply text-gray-500 text-center;
+  @apply text-gray-500 text-center mt-10;
 }
 
-/* Card grid */
 .card-grid {
-  @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6;
+  @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
 }
 
 .testimonial-card {
-  @apply bg-white shadow rounded-lg p-4 flex flex-col;
+  @apply bg-gray-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col gap-4;
+}
+
+.card-header {
+  @apply flex items-center gap-4;
+}
+
+.card-profile {
+  @apply w-16 h-16 rounded-full object-cover border border-gray-300;
 }
 
 .card-title {
   @apply text-lg font-semibold;
 }
 
-.card-designation {
-  @apply text-sm text-gray-500 mb-2;
+.card-designation,
+.card-region,
+.card-star {
+  @apply text-gray-600 text-sm;
+}
+
+.card-comments {
+  @apply text-gray-700;
 }
 
 .card-video {
-  @apply w-full h-40 object-cover rounded mb-2;
+  @apply w-full rounded-md mt-2;
 }
 
 .card-actions {
-  @apply flex justify-between mt-2;
+  @apply flex justify-end gap-2 mt-2;
 }
 
 .update-btn {
-  @apply bg-blue-500 text-white py-1 px-3 rounded hover:bg-blue-600 cursor-pointer;
+  @apply bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition-colors;
 }
 
 .delete-btn {
-  @apply bg-red-500 text-white py-1 px-3 rounded hover:bg-red-600 cursor-pointer;
+  @apply bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition-colors;
 }

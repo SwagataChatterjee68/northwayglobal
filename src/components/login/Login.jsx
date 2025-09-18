@@ -1,15 +1,25 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { toast } from "sonner"; // Using sonner for modern notifications
+import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
 import "./login.css";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const { token, setToken } = useAuth(); // get token from context
+
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Redirect if already logged in
+  useEffect(() => {
+    if (token) {
+      router.push("/"); // redirect to home if logged in
+    }
+  }, [token, router]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -17,30 +27,23 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // 1. Send credentials securely in a POST request body
-      const res = await fetch("https://nortway.mrshakil.com/api/auth/login/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
+      const res = await fetch(
+        "https://nortway.mrshakil.com/api/auth/login/",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password }),
+        }
+      );
       const data = await res.json();
 
-      // 2. Check if the login was successful
       if (res.ok) {
-        toast.success(`Welcome back, ${data.username}!`);
-
-        // 3. Store the authentication token in localStorage
-        localStorage.setItem("authToken", data.token);
-
-        // 4. Redirect using Next.js router for a smoother experience
-        router.push("/dashboard");
-
+        toast.success(`Welcome back!`);
+        localStorage.setItem("token", data.token); // persist token
+        setToken(data.token); // update context immediately
+        router.push("/"); // redirect to home
       } else {
-        // Handle potential errors from the API
-        setError(data.detail || "Invalid email or password.");
+        setError(data.detail || "Invalid credentials. Please try again.");
       }
     } catch (err) {
       console.error(err);
@@ -51,46 +54,42 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1 className="login-title">Login</h1>
-        <form onSubmit={handleLogin}>
-          <div className="input-group">
-            <label htmlFor="username" className="input-label">
-              Email
-            </label>
+    <div className="login-page-container">
+      <div className="login-card-wrapper">
+        <h1 className="login-heading">Login</h1>
+        <p className="login-subheading">to get started</p>
+
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="form-group-custom">
             <input
               type="text"
               id="username"
-              className="input-field"
-              placeholder="Enter username"
+              className="login-input"
+              placeholder="Username"
               value={username}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => setUsername(e.target.value)}
               required
-              disabled={loading} // Disable input when loading
+              disabled={loading}
             />
           </div>
 
-          <div className="input-group">
-            <label htmlFor="password" className="input-label">
-              Password
-            </label>
+          <div className="form-group-custom">
             <input
               type="password"
               id="password"
-              className="input-field"
-              placeholder="Enter password"
+              className="login-input"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              disabled={loading} // Disable input when loading
+              disabled={loading}
             />
           </div>
 
-          {error && <p className="error-text">{error}</p>}
+          {error && <p className="error-message">{error}</p>}
 
-          <button type="submit" className="btn-primary" disabled={loading}>
-            {loading ? "Logging in..." : "Login"}
+          <button type="submit" className="continue-button" disabled={loading}>
+            {loading ? "Continuing..." : "Continue"}
           </button>
         </form>
       </div>

@@ -10,7 +10,7 @@ export default function ManageVideos() {
 
   // Fetch videos from backend
   useEffect(() => {
-    fetch("https://nortway.mrshakil.com/api/gallery/videos")
+    fetch("https://nortway.mrshakil.com/api/gallery/video")
       .then((res) => res.json())
       .then((data) => setVideos(data))
       .catch((err) => console.error("Error fetching videos:", err));
@@ -38,7 +38,7 @@ export default function ManageVideos() {
 
     try {
       for (const video of selectedVideos) {
-        const res = await fetch("https://nortway.mrshakil.com/api/gallery/videos", {
+        const res = await fetch("https://nortway.mrshakil.com/api/gallery/video", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -68,7 +68,7 @@ export default function ManageVideos() {
   // Delete video
   const handleDelete = async (id) => {
     try {
-      await fetch(`https://nortway.mrshakil.com/api/gallery/videos/${id}`, {
+      await fetch(`https://nortway.mrshakil.com/api/gallery/video/${id}`, {
         method: "DELETE",
       });
       setVideos(videos.filter((v) => v.id !== id));

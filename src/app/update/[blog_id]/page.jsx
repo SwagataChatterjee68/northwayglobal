@@ -98,7 +98,7 @@ export default function UpdateBlog() {
 
       if (res.ok) {
         toast.success("Blog updated successfully!");
-        router.push("/manage-blogs");
+        router.push("/manage");
       } else {
         const errorData = await res.json();
         toast.error(errorData.message || "Failed to update blog");

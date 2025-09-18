@@ -22,9 +22,36 @@ export default function ChangePassword() {
       return;
     }
 
-    // Mock API call
-    toast.success("Password changed successfully!");
-    setFormData({ oldPassword: "", newPassword: "" });
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to change your password");
+      return;
+    }
+
+    try {
+      const res = await fetch("https://nortway.mrshakil.com/api/auth/change-password/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          old_password: formData.oldPassword,
+          new_password: formData.newPassword,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("Password changed successfully!");
+        setFormData({ oldPassword: "", newPassword: "" });
+      } else {
+        const errData = await res.json();
+        toast.error(errData.detail || "Failed to change password");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Error connecting to server");
+    }
   };
 
   return (

@@ -49,7 +49,7 @@ export default function ManageBlogs() {
     if (!selectedBlogId) return;
     try {
       // 2. Updated the DELETE URL to match your API structure
-      const res = await fetch(`/api/blogs/blog/${selectedBlogId}/`, {
+      const res = await fetch(`https://nortway.mrshakil.com/api/blogs/blog/${selectedBlogId}/`, {
         method: "DELETE",
         // Note: If your API requires authentication, you may need to add headers here
         // headers: { 'Authorization': `Bearer YOUR_TOKEN_HERE` }
