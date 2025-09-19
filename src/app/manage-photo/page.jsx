@@ -65,7 +65,7 @@ export default function ManagePhotos () {
 
       for (const file of selectedFiles) {
         const formData = new FormData()
-        formData.append('image', file)
+        formData.append('photo', file)
         formData.append('title', file.name)
 
         const res = await fetch(API_BASE, {
