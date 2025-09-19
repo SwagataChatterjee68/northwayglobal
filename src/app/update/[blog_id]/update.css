@@ -18,11 +18,11 @@
 
 /* Form Wrapper & Title */
 .form-wrapper {
-  @apply bg-white p-8 md:p-10 rounded-lg shadow-xl;
+  @apply bg-white p-8 md:p-10 rounded-lg;
 }
 
 .form-title {
-  @apply text-3xl font-bold text-gray-800 mb-8 text-center;
+  @apply text-4xl font-bold text-gray-800 mb-8 ;
 }
 
 /* Form Structure & Spacing */

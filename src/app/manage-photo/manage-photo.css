@@ -1,31 +1,33 @@
-/* Wrapper */
 @import "tailwindcss";
 
-/* Container */
-/* .container {
-  @apply max-w-5xl mx-auto p-6 py-32;
-} */
-
+/* Page Title */
 .page-title {
-  @apply text-2xl font-bold mb-6 text-gray-800;
+  @apply text-2xl font-bold mb-6 text-gray-800 ;
 }
-
+.page-container{
+  @apply max-w-4xl px-16 py-16;
+}
+/* Input wrapper stacked */
 .input-wrapper {
-  @apply flex gap-3 items-center mb-6;
+  @apply flex flex-col gap-4 mb-20;
 }
 
+.input-wrapper label {
+  @apply text-sm font-medium text-gray-700;
+}
+
+/* Inputs */
 .file-input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+  @apply w-full px-3 py-2 border border-gray-300 rounded-md ;
 }
 
-.submit-btn {
-  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer;
-}
-
+/* Photos Grid */
 .photos-grid {
-  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4;
+  @apply grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8;
 }
-
+.submit-btn {
+  @apply  w-1/2 bg-[#ff9100] text-white px-4 py-2 rounded-md hover:bg-orange-400 transition cursor-pointer;
+}
 .photo-item {
   @apply relative bg-white shadow-md rounded-md overflow-hidden;
 }
@@ -39,5 +41,6 @@
 }
 
 .photo-delete {
-  @apply absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer;
+  @apply absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full 
+         flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer;
 }

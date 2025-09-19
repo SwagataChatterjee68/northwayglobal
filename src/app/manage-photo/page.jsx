@@ -4,11 +4,13 @@ import { useState, useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import './manage-photo.css'
 import Topbar from '@/components/topbar/Topbar'
+import { FaPhotoFilm } from 'react-icons/fa6'
 
-export default function ManagePhotos () {
+export default function ManagePhotos() {
   const [photos, setPhotos] = useState([])
   const [selectedFiles, setSelectedFiles] = useState([])
   const [previews, setPreviews] = useState([])
+  const [title, setTitle] = useState('')
   const fileInputRef = useRef(null)
 
   const API_BASE = 'https://nortway.mrshakil.com/api/gallery/photo/'
@@ -27,7 +29,7 @@ export default function ManagePhotos () {
         setPhotos(
           data.map(p => ({
             ...p,
-            photo: p.photo || '/placeholder.jpg', // fallback if photo is missing
+            photo: p.photo || '/placeholder.jpg',
             title: p.title || 'Untitled'
           }))
         )
@@ -39,7 +41,6 @@ export default function ManagePhotos () {
   useEffect(() => {
     const previewUrls = selectedFiles.map(file => URL.createObjectURL(file))
     setPreviews(previewUrls)
-
     return () => previewUrls.forEach(url => URL.revokeObjectURL(url))
   }, [selectedFiles])
 
@@ -51,6 +52,11 @@ export default function ManagePhotos () {
   const handleUpload = async () => {
     if (!selectedFiles.length) {
       toast.error('Please select photos first!')
+      return
+    }
+
+    if (!title.trim()) {
+      toast.error('Please enter a photo title!')
       return
     }
 
@@ -66,15 +72,13 @@ export default function ManagePhotos () {
       for (const file of selectedFiles) {
         const formData = new FormData()
         formData.append('photo', file)
-        formData.append('title', file.name)
+        formData.append('title', title) // use custom title
 
         const res = await fetch(API_BASE, {
           method: 'POST',
           headers: { Authorization: `Token ${token}` },
           body: formData
         })
-
-        console.log(res , "check the response")
 
         if (!res.ok) {
           const errData = await res.json()
@@ -86,13 +90,14 @@ export default function ManagePhotos () {
         uploadedPhotos.push({
           ...savedPhoto,
           photo: savedPhoto.photo || '/placeholder.jpg',
-          title: savedPhoto.title || file.name
+          title: savedPhoto.title || title
         })
       }
 
       setPhotos(prev => [...prev, ...uploadedPhotos])
       setSelectedFiles([])
       setPreviews([])
+      setTitle('')
       if (fileInputRef.current) fileInputRef.current.value = ''
       toast.success('Photo(s) uploaded successfully!')
     } catch (err) {
@@ -129,12 +134,23 @@ export default function ManagePhotos () {
 
   return (
     <section>
-      <Topbar />
-      <div className='container'>
+      <Topbar textTopbar='Manage Photos' topBarIcon={FaPhotoFilm} />
+      <div className='page-container'>
         <h1 className='page-title'>Manage Photos</h1>
 
         {/* Upload Section */}
         <div className='input-wrapper'>
+          <label className='form-label'>
+            Photo Title
+            <input
+              type='text'
+              placeholder='Enter photo title'
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              className='form-input'
+            />
+          </label>
+
           <input
             ref={fileInputRef}
             type='file'
@@ -158,9 +174,7 @@ export default function ManagePhotos () {
                   alt={selectedFiles[idx]?.name || 'Preview'}
                   className='photo-img'
                 />
-                <p className='photo-name'>
-                  {selectedFiles[idx]?.name || 'Preview'}
-                </p>
+                <p className='photo-name'>{title || selectedFiles[idx]?.name}</p>
               </div>
             ))}
           </div>

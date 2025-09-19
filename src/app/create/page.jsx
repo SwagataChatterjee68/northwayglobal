@@ -8,7 +8,7 @@ import PermissionBox from '@/components/modal/Permission'
 import './create.css'
 import Topbar from '@/components/topbar/Topbar'
 
-export default function CreateBlog () {
+export default function CreateBlog() {
   const [formData, setFormData] = useState({
     title: '',
     writer: '',
@@ -99,7 +99,7 @@ export default function CreateBlog () {
 
   return (
     <div >
-      <Topbar textTopbar='Create New Blog' topBarIcon={FaBlog}/>
+      <Topbar textTopbar='Create New Blog' topBarIcon={FaBlog} />
       <main className='container'>
         <div className=''>
           <h1 className='form-title'>Create New Blog</h1>
@@ -173,16 +173,55 @@ export default function CreateBlog () {
             <div className='form-group'>
               <label className='form-label'>Start Writing</label>
               <Editor
-                id='my-tinymce-editor'
                 apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                 value={formData.content}
+                required
                 onEditorChange={handleEditorChange}
                 init={{
                   menubar: false,
                   branding: false,
-                  plugins: ['link', 'lists', 'media', 'table', 'wordcount'],
+                  plugins: [
+                    "anchor",
+                    "autolink",
+                    "charmap",
+                    "codesample",
+                    "emoticons",
+                    "link",
+                    "lists",
+                    "media",
+                    "searchreplace",
+                    "table",
+                    "visualblocks",
+                    "wordcount",
+                    "checklist",
+                    "mediaembed",
+                    "casechange",
+                    "formatpainter",
+                    "pageembed",
+                    "a11ychecker",
+                    "tinymcespellchecker",
+                    "permanentpen",
+                    "powerpaste",
+                    "advtable",
+                    "advcode",
+                    "advtemplate",
+                    "mentions",
+                    "tableofcontents",
+                    "footnotes",
+                    "mergetags",
+                    "autocorrect",
+                    "typography",
+                    "inlinecss",
+                    "markdown",
+                    "importword",
+                    "exportword",
+                    "exportpdf",
+                  ],
                   toolbar:
-                    'undo redo | bold italic underline | align | numlist bullist | link media'
+                    "undo redo | blocks fontfamily fontsize | " +
+                    "bold italic underline strikethrough | link media table mergetags | " +
+                    "align lineheight | checklist numlist bullist indent outdent | " +
+                    "emoticons charmap | removeformat",
                 }}
               />
             </div>

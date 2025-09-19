@@ -194,20 +194,55 @@ export default function UpdateBlog() {
             <div className="form-group">
               <label className="form-label">Content</label>
               <Editor
-                id="my-tinymce-editor"
                 apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
                 value={formData.content}
+                required
                 onEditorChange={handleEditorChange}
                 init={{
-                  height: 400,
                   menubar: false,
                   branding: false,
-                  plugins: 'lists link media table code wordcount',
+                  plugins: [
+                    "anchor",
+                    "autolink",
+                    "charmap",
+                    "codesample",
+                    "emoticons",
+                    "link",
+                    "lists",
+                    "media",
+                    "searchreplace",
+                    "table",
+                    "visualblocks",
+                    "wordcount",
+                    "checklist",
+                    "mediaembed",
+                    "casechange",
+                    "formatpainter",
+                    "pageembed",
+                    "a11ychecker",
+                    "tinymcespellchecker",
+                    "permanentpen",
+                    "powerpaste",
+                    "advtable",
+                    "advcode",
+                    "advtemplate",
+                    "mentions",
+                    "tableofcontents",
+                    "footnotes",
+                    "mergetags",
+                    "autocorrect",
+                    "typography",
+                    "inlinecss",
+                    "markdown",
+                    "importword",
+                    "exportword",
+                    "exportpdf",
+                  ],
                   toolbar:
-                    "undo redo | blocks | " +
-                    "bold italic underline | alignleft aligncenter " +
-                    "alignright alignjustify | bullist numlist outdent indent | " +
-                    "link media | removeformat",
+                    "undo redo | blocks fontfamily fontsize | " +
+                    "bold italic underline strikethrough | link media table mergetags | " +
+                    "align lineheight | checklist numlist bullist indent outdent | " +
+                    "emoticons charmap | removeformat",
                 }}
               />
             </div>

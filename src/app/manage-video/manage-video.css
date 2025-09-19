@@ -1,24 +1,30 @@
 @import "tailwindcss";
 
-/* Container */
-
-
+/* Title */
 .page-title {
   @apply text-2xl font-bold mb-6 text-gray-800;
 }
-
-.input-wrapper {
-  @apply flex gap-3 items-center mb-6;
+.page-container{
+  @apply max-w-4xl px-16 py-16;
+}
+/* Form */
+.form-wrapper {
+  @apply flex flex-col gap-4 mb-6 bg-white p-4 rounded-md;
 }
 
-.file-input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500;
+.form-label {
+  @apply flex flex-col text-sm font-medium text-gray-700;
+}
+
+.form-input {
+  @apply mt-1 w-full px-3 py-2 border border-gray-300 rounded-md;
 }
 
 .submit-btn {
-  @apply bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer;
+  @apply  w-1/2 bg-[#ff9100] text-white px-4 py-2 rounded-md hover:bg-orange-400 transition cursor-pointer;
 }
 
+/* Grid */
 .videos-grid {
   @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4;
 }
@@ -38,4 +44,3 @@
 .video-delete {
   @apply absolute top-1 right-1 bg-red-500 text-white w-6 h-6 rounded-full flex items-center justify-center text-xs hover:bg-red-600 cursor-pointer;
 }
-

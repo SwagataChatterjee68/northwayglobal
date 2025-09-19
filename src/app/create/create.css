@@ -15,7 +15,7 @@
 }
 
 .form-title {
-  @apply mb-4 text-2xl font-bold;
+  @apply mb-4 text-4xl font-bold;
 }
 
 .form-subtitle {

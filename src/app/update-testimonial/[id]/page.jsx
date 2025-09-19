@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import './update-testimonial.css' // reuse the same styles
+import { FaVideo } from 'react-icons/fa'
+import Topbar from '@/components/topbar/Topbar'
 
-export default function UpdateTestimonial () {
+export default function UpdateTestimonial() {
   const { id } = useParams()
   const router = useRouter()
 
@@ -109,86 +111,91 @@ export default function UpdateTestimonial () {
   }
 
   return (
-    <div className='container'>
-      <h1 className='page-title'>Update Testimonial</h1>
+    <section>
+      <Topbar textTopbar='Manage Videos' topBarIcon={FaVideo} />
 
-      <form onSubmit={handleSubmit} className='form-wrapper'>
-        <input
-          type='text'
-          name='name'
-          value={formData.name}
-          onChange={handleChange}
-          placeholder='Name'
-          className='form-input'
-        />
+      <div className='page-container'>
 
-        <input
-          type='text'
-          name='designation'
-          value={formData.designation}
-          onChange={handleChange}
-          placeholder='Designation'
-          className='form-input'
-        />
+        <h1 className='page-title'>Update Testimonial</h1>
 
-        <input
-          type='text'
-          name='region'
-          value={formData.region}
-          onChange={handleChange}
-          placeholder='Region'
-          className='form-input'
-        />
-
-        <input
-          type='text'
-          name='video_url'
-          value={formData.video_url}
-          onChange={handleChange}
-          placeholder='Video URL (optional)'
-          className='form-input'
-        />
-
-        <input
-          type='number'
-          name='star'
-          value={formData.star}
-          min={1}
-          max={5}
-          onChange={handleChange}
-          className='form-input'
-        />
-
-        <textarea
-          name='comments'
-          value={formData.comments}
-          onChange={handleChange}
-          placeholder='Comments'
-          className='form-input'
-        />
-
-        <div className='form-group'>
-          <label>Profile Image</label>
+        <form onSubmit={handleSubmit} className='form-wrapper'>
           <input
-            type='file'
-            accept='image/*'
-            ref={imageInputRef}
-            onChange={handleImageChange}
+            type='text'
+            name='name'
+            value={formData.name}
+            onChange={handleChange}
+            placeholder='Name'
             className='form-input'
           />
-          {profileImage && (
-            <img
-              src={profileImage.url}
-              alt='Profile'
-              className='photo-preview'
-            />
-          )}
-        </div>
 
-        <button type='submit' className='submit-btn'>
-          Update
-        </button>
-      </form>
-    </div>
+          <input
+            type='text'
+            name='designation'
+            value={formData.designation}
+            onChange={handleChange}
+            placeholder='Designation'
+            className='form-input'
+          />
+
+          <input
+            type='text'
+            name='region'
+            value={formData.region}
+            onChange={handleChange}
+            placeholder='Region'
+            className='form-input'
+          />
+
+          <input
+            type='text'
+            name='video_url'
+            value={formData.video_url}
+            onChange={handleChange}
+            placeholder='Video URL (optional)'
+            className='form-input'
+          />
+
+          <input
+            type='number'
+            name='star'
+            value={formData.star}
+            min={1}
+            max={5}
+            onChange={handleChange}
+            className='form-input'
+          />
+
+          <textarea
+            name='comments'
+            value={formData.comments}
+            onChange={handleChange}
+            placeholder='Comments'
+            className='form-input'
+          />
+
+          <div className='form-group'>
+            <label>Profile Image</label>
+            <input
+              type='file'
+              accept='image/*'
+              ref={imageInputRef}
+              onChange={handleImageChange}
+              className='form-input'
+            />
+            {profileImage && (
+              <img
+                src={profileImage.url}
+                alt='Profile'
+                className='photo-preview'
+              />
+            )}
+          </div>
+
+          <button type='submit' className='submit-btn'>
+            Update
+          </button>
+        </form>
+      </div>
+    </section>
   )
 }

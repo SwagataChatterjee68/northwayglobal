@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import PermissionBox from '@/components/modal/Permission'
 import Topbar from '@/components/topbar/Topbar'
+import { MdOutlineManageHistory } from "react-icons/md";
 
 export default function ManageBlogs () {
   const router = useRouter()
@@ -81,8 +82,8 @@ export default function ManageBlogs () {
 
   return (
     <section>
-      <Topbar />
-      <div className='container'>
+      <Topbar textTopbar='Manage Blogs' topBarIcon={MdOutlineManageHistory}/>
+      <div className='container' >
         <main className=''>
           <h1 className='page-title'>Manage Blogs</h1>
 

@@ -3,6 +3,8 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import './topbar.css'
+import { FaKey } from "react-icons/fa6";
+import { AiOutlineLogout } from "react-icons/ai";
 
 export default function Topbar({ textTopbar = "Dashboard", topBarIcon: TopBarIcon }) {
   const router = useRouter()
@@ -60,10 +62,10 @@ export default function Topbar({ textTopbar = "Dashboard", topBarIcon: TopBarIco
         {/* Right side: Actions */}
         <nav className="flex space-x-4">
           <Link href="/changepassword" className="btn-primary">
-            Change Password
+            <FaKey/> Change Password
           </Link>
           <button onClick={handleLogout} className="btn-danger">
-            Logout
+            <AiOutlineLogout/> Logout
           </button>
         </nav>
       </div>

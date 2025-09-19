@@ -1,11 +1,7 @@
 @import "tailwindcss";
 
-/* .container {
-  @apply max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-md;
-} */
-
 .page-title {
-  @apply text-3xl font-bold mb-6 text-center;
+  @apply text-4xl font-bold mb-6;
 }
 
 .empty-text {
@@ -17,7 +13,16 @@
 }
 
 .testimonial-card {
-  @apply bg-gray-50 p-4 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col gap-4;
+  @apply bg-gray-50 rounded-lg shadow hover:shadow-md transition-shadow flex flex-col;
+}
+
+/* Video at the top */
+.card-video {
+  @apply w-full rounded-t-lg object-cover max-h-60;
+}
+
+.card-body {
+  @apply p-4 flex flex-col gap-3;
 }
 
 .card-header {
@@ -42,12 +47,8 @@
   @apply text-gray-700;
 }
 
-.card-video {
-  @apply w-full rounded-md mt-2;
-}
-
 .card-actions {
-  @apply flex justify-end gap-2 mt-2;
+  @apply flex justify-end gap-2 mt-4;
 }
 
 .update-btn {

@@ -1,78 +1,57 @@
 'use client'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
 import './manage-video.css'
 import Topbar from '@/components/topbar/Topbar'
+import { FaVideo } from "react-icons/fa6";
 
 export default function ManageVideos () {
   const [videos, setVideos] = useState([])
-  const [selectedVideos, setSelectedVideos] = useState([])
-  const fileInputRef = useRef(null)
+  const [title, setTitle] = useState('')
+  const [videoUrl, setVideoUrl] = useState('')
 
-  // Fetch videos from backend
+  // Fetch videos
   useEffect(() => {
-    fetch('https://nortway.mrshakil.com/api/gallery/video')
+    fetch('https://nortway.mrshakil.com/api/gallery/video/')
       .then(res => res.json())
       .then(data => setVideos(data))
       .catch(err => console.error('Error fetching videos:', err))
   }, [])
 
-  // Select files
-  const handleFileChange = e => {
-    const files = Array.from(e.target.files)
-    if (!files.length) return
-
-    const newVideos = files.map(file => ({
-      title: file.name, // title instead of name
-      videoUrl: URL.createObjectURL(file) // videoUrl instead of url
-    }))
-
-    setSelectedVideos(newVideos)
-  }
-
-  // Upload selected videos
   const handleUpload = async () => {
-    if (!selectedVideos.length) {
-      toast.error('Please select videos first!')
+    if (!title || !videoUrl) {
+      toast.error('Please provide both title and video URL!')
       return
     }
 
     try {
-      for (const video of selectedVideos) {
-        const res = await fetch(
-          'https://nortway.mrshakil.com/api/gallery/video',
-          {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              title: video.title,
-              videoUrl: video.videoUrl
-            })
-          }
-        )
+      const res = await fetch(
+        'https://nortway.mrshakil.com/api/gallery/video/',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, videoUrl })
+        }
+      )
 
-        if (!res.ok) throw new Error('Upload failed')
+      if (!res.ok) throw new Error('Upload failed')
 
-        const savedVideo = await res.json()
-        setVideos(prev => [...prev, savedVideo])
-      }
+      const savedVideo = await res.json()
+      setVideos(prev => [...prev, savedVideo])
 
-      setSelectedVideos([])
-      toast.success('Video(s) uploaded successfully!')
-
-      if (fileInputRef.current) {
-        fileInputRef.current.value = ''
-      }
+      // reset form
+      setTitle('')
+      setVideoUrl('')
+      toast.success('Video uploaded successfully!')
     } catch (err) {
       console.error(err)
-      toast.error('Error uploading video(s)')
+      toast.error('Error uploading video')
     }
   }
 
-  // Delete video
   const handleDelete = async id => {
     try {
-      await fetch(`https://nortway.mrshakil.com/api/gallery/video/${id}`, {
+      await fetch(`https://nortway.mrshakil.com/api/gallery/video/${id}/`, {
         method: 'DELETE'
       })
       setVideos(videos.filter(v => v.id !== id))
@@ -85,47 +64,60 @@ export default function ManageVideos () {
 
   return (
     <section>
-      <Topbar />
-      <div className='container'>
-        <div>
-          <h1 className='page-title'>Manage Videos</h1>
+      <Topbar textTopbar='Manage Videos' topBarIcon={FaVideo} />
+      <div className='page-container'>
+        <h1 className='page-title'>Manage Videos</h1>
 
-          <div className='input-wrapper'>
+        {/* Form */}
+        <div className='form-wrapper'>
+          <label className='form-label'>
+            Video Title
             <input
-              ref={fileInputRef}
-              type='file'
-              accept='video/*'
-              multiple
-              onChange={handleFileChange}
-              className='file-input'
+              type='text'
+              placeholder='Enter video title'
+              value={title}
+              onChange={e => setTitle(e.target.value)}
+              className='form-input'
             />
-            <button onClick={handleUpload} className='submit-btn'>
-              Upload
-            </button>
-          </div>
+          </label>
 
-          {/* Show uploaded videos */}
-          {videos.length > 0 && (
-            <div className='videos-grid'>
-              {videos.map(video => (
-                <div key={video.id} className='video-item'>
-                  <video
-                    src={video.videoUrl}
-                    controls
-                    className='video-preview'
-                  />
-                  <p className='video-name'>{video.title}</p>
-                  <button
-                    onClick={() => handleDelete(video.id)}
-                    className='video-delete'
-                  >
-                    ❌
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+          <label className='form-label'>
+            Video URL
+            <input
+              type='text'
+              placeholder='https://example.com/video.mp4'
+              value={videoUrl}
+              onChange={e => setVideoUrl(e.target.value)}
+              className='form-input'
+            />
+          </label>
+
+          <button onClick={handleUpload} className='submit-btn'>
+            Upload
+          </button>
         </div>
+
+        {/* List */}
+        {videos.length > 0 && (
+          <div className='videos-grid'>
+            {videos.map(video => (
+              <div key={video.id} className='video-item'>
+                <video
+                  src={video.videoUrl}
+                  controls
+                  className='video-preview'
+                />
+                <p className='video-name'>{video.title}</p>
+                <button
+                  onClick={() => handleDelete(video.id)}
+                  className='video-delete'
+                >
+                  ❌
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

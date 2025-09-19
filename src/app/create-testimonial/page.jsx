@@ -2,8 +2,8 @@
 import Topbar from '@/components/topbar/Topbar';
 import React, { useState, useRef } from 'react';
 import { toast } from 'sonner';
-// import { toast } from 'react-toastify'; 
-
+import { MdCreateNewFolder } from "react-icons/md";
+import "./create-testimonial.css"
 
 export default function CreateTestimonial() {
   const [formData, setFormData] = useState({
@@ -27,13 +27,13 @@ export default function CreateTestimonial() {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    
+
     // Validate file size (optional - e.g., max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       toast.error('File size should be less than 5MB');
       return;
     }
-    
+
     setProfileImage({
       name: file.name,
       file,
@@ -73,7 +73,7 @@ export default function CreateTestimonial() {
       data.append('region', formData.region.trim());
       data.append('comments', formData.comments.trim());
       data.append('star', parseInt(formData.star)); // Ensure it's a number
-      
+
       // Only append video_url if it's not empty
       if (formData.video_url.trim()) {
         data.append('video_url', formData.video_url.trim());
@@ -82,7 +82,7 @@ export default function CreateTestimonial() {
       if (video?.file) {
         data.append('video_file', video.file);
       }
-      
+
       if (profileImage?.file) {
         data.append('profile_image', profileImage.file);
       }
@@ -106,7 +106,7 @@ export default function CreateTestimonial() {
 
       if (res.ok) {
         toast.success('Testimonial submitted successfully!');
-        console.log(res , "check final res")
+        console.log(res, "check final res")
         // Reset form
         setFormData({
           name: '',
@@ -155,100 +155,122 @@ export default function CreateTestimonial() {
 
   return (
     <section>
-      <Topbar textTopbar="Create Testimonial"  />
+      <Topbar textTopbar="Create Testimonial" topBarIcon={MdCreateNewFolder} />
       <div className='container'>
         <h1 className='page-title'>Create Testimonial</h1>
 
-        <form onSubmit={handleSubmit} className='form-wrapper'>
-          <input
-            type='text'
-            name='name'
-            value={formData.name}
-            onChange={handleChange}
-            placeholder='Name'
-            className='form-input'
-            required
-          />
+        <form onSubmit={handleSubmit} className="form-wrapper">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="form-group">
+              <label htmlFor="name">Name</label>
+              <input
+                id="name"
+                type="text"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                className="form-input"
+                required
+              />
+            </div>
 
-          <input
-            type='text'
-            name='designation'
-            value={formData.designation}
-            onChange={handleChange}
-            placeholder='Designation'
-            className='form-input'
-            required
-          />
+            <div className="form-group">
+              <label htmlFor="designation">Designation</label>
+              <input
+                id="designation"
+                type="text"
+                name="designation"
+                value={formData.designation}
+                onChange={handleChange}
+                className="form-input"
+                required
+              />
+            </div>
 
-          <input
-            type='text'
-            name='region'
-            value={formData.region}
-            onChange={handleChange}
-            placeholder='Region'
-            className='form-input'
-          />
+            <div className="form-group">
+              <label htmlFor="region">Region</label>
+              <input
+                id="region"
+                type="text"
+                name="region"
+                value={formData.region}
+                onChange={handleChange}
+                className="form-input"
+              />
+            </div>
 
-          <input
-            type='url'
-            name='video_url'
-            value={formData.video_url}
-            onChange={handleChange}
-            placeholder='Video URL (optional)'
-            className='form-input'
-          />
+            <div className="form-group">
+              <label htmlFor="video_url">Video URL (optional)</label>
+              <input
+                id="video_url"
+                type="url"
+                name="video_url"
+                value={formData.video_url}
+                onChange={handleChange}
+                className="form-input"
+              />
+            </div>
 
-          <input
-            type='number'
-            name='star'
-            placeholder='Star Rating (1-5)'
-            value={formData.star}
-            min={1}
-            max={5}
-            onChange={handleChange}
-            className='form-input'
-            required
-          />
+            <div className="form-group">
+              <label htmlFor="star">Star Rating (1–5)</label>
+              <input
+                id="star"
+                type="number"
+                name="star"
+                value={formData.star}
+                min={1}
+                max={5}
+                onChange={handleChange}
+                className="form-input"
+                required
+              />
+            </div>
 
-          <textarea
-            name='comments'
-            value={formData.comments}
-            onChange={handleChange}
-            placeholder='Comments'
-            className='form-input'
-            rows={4}
-          />
-
-          <div className='form-group'>
-            <label>Profile Image</label>
-            <input
-              type='file'
-              accept='image/*'
-              ref={imageInputRef}
-              onChange={handleImageChange}
-              className='form-input'
-            />
-            {profileImage && (
-              <div className='image-preview-container'>
-                <img
-                  src={profileImage.url}
-                  alt={profileImage.name}
-                  className='photo-preview'
-                  style={{ maxWidth: '200px', maxHeight: '200px', objectFit: 'cover' }}
-                />
-                <p>{profileImage.name}</p>
-              </div>
-            )}
+            {/* Profile Image stays inside grid */}
+            <div className="form-group">
+              <label>Profile Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                ref={imageInputRef}
+                onChange={handleImageChange}
+                className="form-input"
+              />
+              {profileImage && (
+                <div className="image-preview-container">
+                  <img
+                    src={profileImage.url}
+                    alt={profileImage.name}
+                    className="photo-preview"
+                  />
+                  <p className="text-sm text-gray-600 mt-1">{profileImage.name}</p>
+                </div>
+              )}
+            </div>
           </div>
 
-          <button 
-            type='submit' 
-            className='submit-btn'
+          {/* Comments stays full width */}
+          <div className="form-group col-span-3">
+            <label htmlFor="comments">Comments</label>
+            <textarea
+              id="comments"
+              name="comments"
+              value={formData.comments}
+              onChange={handleChange}
+              className="form-input"
+              rows={4}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="submit-btn"
             disabled={isLoading}
           >
-            {isLoading ? 'Submitting...' : 'Submit'}
+            {isLoading ? "Submitting..." : "Submit"}
           </button>
         </form>
+
       </div>
     </section>
   );
