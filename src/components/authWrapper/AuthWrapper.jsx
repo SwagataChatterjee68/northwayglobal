@@ -26,10 +26,10 @@ function AuthContent ({ children }) {
     <section>
       <main className='flex  min-h-screen '>
      
-        <section className='w-[18%] bg-amber-50 '>
+        <section className='lg:w-[25%] xl:w-[18%] bg-amber-50 '>
           <DashboardNavbar />
         </section>
-        <section className='w-[82%] bg-white '>{children}</section>
+        <section className='lg:w-[75%] xl:w-[82%] bg-white '>{children}</section>
       </main>
     </section>
   ) : (
