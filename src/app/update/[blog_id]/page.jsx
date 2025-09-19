@@ -1,11 +1,12 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import { FaPaperPlane } from "react-icons/fa";
+import { FaBlog, FaPaperPlane } from "react-icons/fa";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "sonner";
 import PermissionBox from "@/components/modal/Permission";
 import "./update.css"; // Make sure you have this CSS file for styling
+import Topbar from "@/components/topbar/Topbar";
 
 export default function UpdateBlog() {
   const params = useParams();
@@ -119,8 +120,9 @@ export default function UpdateBlog() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="page-container">
-      <main className="main-content">
+    <div >
+      <Topbar textTopbar="Update Blog" topBarIcon={FaBlog}/>
+      <main className="container">
         <div className="form-wrapper">
           <h1 className="form-title">Update Blog</h1>
           <form onSubmit={handleSubmit} className="space-y-6">

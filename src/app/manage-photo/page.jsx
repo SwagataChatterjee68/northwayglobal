@@ -74,6 +74,8 @@ export default function ManagePhotos () {
           body: formData
         })
 
+        console.log(res , "check the response")
+
         if (!res.ok) {
           const errData = await res.json()
           toast.error(errData.detail || 'Failed to upload photo')
